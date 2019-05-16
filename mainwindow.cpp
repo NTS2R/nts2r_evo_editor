@@ -3,6 +3,7 @@
 
 #include <QSharedPointer>
 #include <QFileDialog>
+#include <QHBoxLayout>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -16,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(open, &QAction::triggered, this, &MainWindow::openFile);
     connect(save, &QAction::triggered, this, &MainWindow::saveFile);
     menuBar()->addMenu(file);
+    tabWidget = ui->tabWidget;
+    militaryCommander = new MilitaryCommander(this);
+    militaryCommander->setVisible(true);
+
+    ui->tabWidget->addTab(militaryCommander, tr("武将"));
 }
 
 MainWindow::~MainWindow()

@@ -5,6 +5,8 @@
 #include <QMenu>
 #include <QFile>
 #include <QDebug>
+#include <QTabWidget>
+#include "militarycommander.h"
 namespace Ui {
 class MainWindow;
 }
@@ -23,6 +25,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QTabWidget* tabWidget;
+    MilitaryCommander* militaryCommander;
     QString nesFileName;
     QByteArray nesFileByteArray;
 };
