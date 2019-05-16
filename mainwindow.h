@@ -19,16 +19,20 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    static QByteArray nesFileByteArray;
+signals:
+    void refreshMilitaryCommander();
+
 private slots:
     void openFile();
     void saveFile();
+
 
 private:
     Ui::MainWindow *ui;
     QTabWidget* tabWidget;
     MilitaryCommander* militaryCommander;
     QString nesFileName;
-    QByteArray nesFileByteArray;
 };
 
 #endif // MAINWINDOW_H

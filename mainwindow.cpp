@@ -4,14 +4,17 @@
 #include <QSharedPointer>
 #include <QFileDialog>
 #include <QHBoxLayout>
+
+QByteArray MainWindow::nesFileByteArray;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    auto file = new QMenu(tr("&File"), this);
-    auto open = new QAction(tr("&Open"), this);
-    auto save = new QAction(tr("&Save"), this);
+    auto file = new QMenu(tr("&文件"), this);
+    auto open = new QAction(tr("&打开"), this);
+    auto save = new QAction(tr("&保存"), this);
     file->addAction(open);
     file->addAction(save);
     connect(open, &QAction::triggered, this, &MainWindow::openFile);
@@ -22,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     militaryCommander->setVisible(true);
 
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
+
+    connect(this, &MainWindow::refreshMilitaryCommander,
+            militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +37,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile() {
     QFileDialog fileDialog;
-    fileDialog.setWindowTitle(tr("Open nes"));
+    fileDialog.setWindowTitle(tr("打开 nes"));
     fileDialog.setDirectory(".");
     fileDialog.setNameFilter(tr("Nes(*.nes)"));
     fileDialog.setFileMode(QFileDialog::ExistingFiles);
@@ -46,7 +52,7 @@ void MainWindow::openFile() {
             nesFileByteArray = nesFile->readAll();
             qDebug() << nesFileByteArray.length();
             nesFile->close();
-
+            emit refreshMilitaryCommander();
         }
     }
 }
