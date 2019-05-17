@@ -17,6 +17,10 @@ public:
     quint8 sudu;
     quint8 wofangliupai;
     quint8 difangliupai;
+    quint8 diaobaoliupai;
+    QString face;
+    quint8 faceControl;
+    quint8 chtNameControl;
     QString chtName;
     QString chsName;
     QByteArray data;

@@ -69,10 +69,14 @@ void MilitaryCommander::setCurrentItem() {
     //模型
     modelText->setText(QString("%1").arg(commander.model, 0, 16));
 
-    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 0, 16));
-    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 0, 16));
+    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')));
+    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')));
+    diaobaoliupaiText->setPlainText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')));
+    faceText->setPlainText(commander.face);
+    faceControlText->setPlainText(QString("%1").arg(commander.faceControl, 0, 16));
     //CHS角色名字 offset25 - 最后
     simpliedNameText->setText(commander.chsName);
     //CHT角色名字 offset22 -24
     traditionalNameText->setText(commander.chtName);
+    chtNameControlText->setPlainText(QString("%1").arg(commander.chtNameControl, 0, 16));
 }

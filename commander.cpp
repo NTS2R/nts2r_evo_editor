@@ -24,6 +24,14 @@ void Commander::setCommanderAttribute(QByteArray data) {
     difangliupai = static_cast<quint8>(data.at(5));
     //我方流派 offset6
     wofangliupai = static_cast<quint8>(data.at(6));
+    //掉宝流派 offset13
+    diaobaoliupai = static_cast<quint8>(data.at(13));
+    //脸谱 offset 14 - 19
+    face = data.mid(14, 6).toHex(' ');
+    //脸谱控制 & 繁体中文控制
+    quint8 offset21 = static_cast<quint8>(data.at(21));
+    faceControl = offset21 >> 4;
+    chtNameControl = offset21 & 0xf;
     //CHT角色名字 offset22 -24
     chtName = data.mid(22, 3).toHex(' ');
     //CHS角色名字 offset25 - 最后
