@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        commander.cpp \
         main.cpp \
         mainwindow.cpp \
         militarycommander.cpp
 
 HEADERS += \
+        commander.h \
         mainwindow.h \
         militarycommander.h
 

@@ -34,11 +34,9 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
             if (static_cast<quint8>(value) == static_cast<quint8>(0xFF))
                 break;
         }
-        commanderVector.push_back(commanderValue);
-//        qDebug() << commanderValue.toHex();
-    }
-    for (auto& commander : commanderVector) {
-        qDebug() << commander;
+        Commander commanderData;
+        commanderData.setCommanderAttribute(commanderValue);
+        commanderVector.push_back(commanderData);
     }
     setCommanderList();
 }
@@ -46,11 +44,10 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
 void MilitaryCommander::setCommanderList() {
     this->commanderList->clear();
     for (int index = 0x00; index <= 0xFF; ++index) {
-        QByteArray commander = commanderVector[index];
-        QByteArray name = commander.mid(least_length);
-        qDebug() << name.toHex();
+        auto commander = commanderVector[index];
+        qDebug() << commander.chsName;
         commanderList->addItem(
-                    QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( name.toHex().data() )
+                    QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( commander.chsName )
                     );
     }
 }
@@ -58,25 +55,24 @@ void MilitaryCommander::setCommanderList() {
 void MilitaryCommander::setCurrentItem() {
     auto index = commanderList->currentRow();
     auto commander = commanderVector[index];
-    textEdit->setText(commander.toHex(' '));
-    //智力 offset2
-    zhiliText->setText(QString("%1").arg(static_cast<quint8>(commander.at(2))));
-    //武力 offset3
-    wuliText->setText(QString("%1").arg(static_cast<quint8>(commander.at(3))));
-    //速度 offset4
-    suduText->setText(QString("%1").arg(static_cast<quint8>(commander.at(4))));
-    quint8 offset0 = static_cast<quint8>(commander.at(0));
-    //颜色 offset0 low
-    colorText->setText(QString("%1").arg(offset0 & 0xf, 0, 16));
-    //章节 offset0 high
-    chapterText->setText(QString("%1").arg(offset0 >> 4, 0, 16));
-    //模型 offset1
-    modelText->setText(QString("%1").arg(static_cast<quint8>(commander.at(1)), 0, 16));
+    textEdit->setText(commander.data.toHex(' '));
+    //智力
+    zhiliText->setText(QString("%1").arg(commander.zhili));
+    //武力
+    wuliText->setText(QString("%1").arg(commander.wuli));
+    //速度
+    suduText->setText(QString("%1").arg(commander.sudu));
+    //颜色
+    colorText->setText(QString("%1").arg(commander.color, 0, 16));
+    //章节
+    chapterText->setText(QString("%1").arg(commander.chapter, 0, 16));
+    //模型
+    modelText->setText(QString("%1").arg(commander.model, 0, 16));
 
+    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 0, 16));
+    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 0, 16));
     //CHS角色名字 offset25 - 最后
-    auto chsName = commander.mid(least_length).toHex(' ');
-    simpliedNameText->setText(chsName);
+    simpliedNameText->setText(commander.chsName);
     //CHT角色名字 offset22 -24
-    auto chtName = commander.mid(22, 3).toHex(' ');
-    traditionalNameText->setText(chtName);
+    traditionalNameText->setText(commander.chtName);
 }
