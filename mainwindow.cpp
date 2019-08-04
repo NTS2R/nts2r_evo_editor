@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->resize(militaryCommander->size());
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
+
 }
 
 MainWindow::~MainWindow()

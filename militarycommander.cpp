@@ -62,7 +62,7 @@ void MilitaryCommander::setCommanderList() {
         auto commander = commanderVector[index];
         qDebug() << commander.chsName;
         commanderList->addItem(
-                    QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( commander.chsName )
+                    QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( commander.chsName ).toUpper()
                     );
     }
 }
@@ -72,11 +72,12 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
     skillRen->setChecked(skillRenHuiDang & 0b100);
     skillHui->setChecked(skillRenHuiDang & 0b010);
     skillDang->setChecked(skillRenHuiDang & 0b001);
-    auto skillBiGongWuZhi = commander.skillBiGongWuZhi;
-    skillBi->setChecked(skillBiGongWuZhi & 0b1000);
-    skillWu->setChecked(skillBiGongWuZhi & 0b0100);
-    skillGong->setChecked(skillBiGongWuZhi & 0b0010);
-    skillZhi->setChecked(skillBiGongWuZhi & 0b0001);
+    auto skillBiGongWuZhiShu = commander.skillBiGongWuZhiShu;
+    skillBi->setChecked(skillBiGongWuZhiShu & 0b10000);
+    skillWu->setChecked(skillBiGongWuZhiShu & 0b01000);
+    skillGong->setChecked(skillBiGongWuZhiShu & 0b00100);
+    skillZhi->setChecked(skillBiGongWuZhiShu & 0b00010);
+    skillShu->setChecked(skillBiGongWuZhiShu & 0b00001);
     auto skillFanHunJue = commander.skillFanHunJue;
     skillFan->setChecked(skillFanHunJue & 0b100);
     skillHun->setChecked(skillFanHunJue & 0b010);
@@ -96,7 +97,7 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
 void MilitaryCommander::setCurrentItem() {
     auto index = commanderList->currentRow();
     auto commander = commanderVector[index];
-    textEdit->setText(commander.data.toHex(' '));
+    textEdit->setText(commander.data.toHex(' ').toUpper());
     //智力
     zhiliText->setText(QString("%1").arg(commander.zhili));
     //武力
@@ -104,22 +105,22 @@ void MilitaryCommander::setCurrentItem() {
     //速度
     suduText->setText(QString("%1").arg(commander.sudu));
     //颜色
-    colorText->setText(QString("%1").arg(commander.color, 0, 16));
+    colorText->setText(QString("%1").arg(commander.color, 0, 16).toUpper());
     //章节
-    chapterText->setText(QString("%1").arg(commander.chapter, 0, 16));
+    chapterText->setText(QString("%1").arg(commander.chapter, 0, 16).toUpper());
     //模型
-    modelText->setText(QString("%1").arg(commander.model, 0, 16));
+    modelText->setText(QString("%1").arg(commander.model, 0, 16).toUpper());
 
-    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')));
-    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')));
-    diaobaoliupaiText->setPlainText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')));
-    faceText->setPlainText(commander.face);
-    faceControlText->setPlainText(QString("%1").arg(commander.faceControl, 0, 16));
+    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')).toUpper());
+    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')).toUpper());
+    diaobaoliupaiText->setPlainText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')).toUpper());
+    faceText->setPlainText(commander.face.toUpper());
+    faceControlText->setPlainText(QString("%1").arg(commander.faceControl, 0, 16).toUpper());
     //CHS角色名字 offset25 - 最后
-    simpliedNameText->setText(commander.chsName);
+    simpliedNameText->setText(commander.chsName.toUpper());
     //CHT角色名字 offset22 -24
-    traditionalNameText->setText(commander.chtName);
-    chtNameControlText->setPlainText(QString("%1").arg(commander.chtNameControl, 0, 16));
+    traditionalNameText->setText(commander.chtName.toUpper());
+    chtNameControlText->setPlainText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
     setSkillCheckBox(commander);
 }
 
@@ -144,11 +145,12 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
             (static_cast<quint8>(skillHui->isChecked()) << 1) |
             (static_cast<quint8>(skillDang->isChecked())));
     newCommander.skillRenHuiDang = skillRenHuiDang;
-    quint8 skillBiGongWuZhi = static_cast<quint8>((static_cast<quint8>(skillBi->isChecked()) << 3) |
-            (static_cast<quint8>(skillWu->isChecked()) << 2) |
-            (static_cast<quint8>(skillGong->isChecked()) << 1) |
-            (static_cast<quint8>(skillZhi->isChecked())));
-    newCommander.skillBiGongWuZhi = skillBiGongWuZhi;
+    quint8 skillBiGongWuZhiShu = static_cast<quint8>((static_cast<quint8>(skillBi->isChecked()) << 4) |
+            (static_cast<quint8>(skillWu->isChecked()) << 3) |
+            (static_cast<quint8>(skillGong->isChecked()) << 2) |
+            (static_cast<quint8>(skillZhi->isChecked()) << 1) |
+            (static_cast<quint8>(skillShu->isChecked())));
+    newCommander.skillBiGongWuZhiShu = skillBiGongWuZhiShu;
 
     quint8 skillFanHunJue = static_cast<quint8>((static_cast<quint8>(skillFan->isChecked()) << 2) |
             (static_cast<quint8>(skillHun->isChecked()) << 1) |

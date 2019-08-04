@@ -22,8 +22,8 @@ void Commander::setCommanderAttribute(QByteArray data) {
     wofangliupai = static_cast<quint8>(data.at(6));
     //特技 仁 慧 挡 offset7 80/40/20
     skillRenHuiDang = static_cast<quint8>(static_cast<quint8>(data.at(7)) & (0b11100000)) >> 5;
-    //特技 避 攻 武 智 offset12 80/40/20/10
-    skillBiGongWuZhi = static_cast<quint8>(static_cast<quint8>(data.at(12)) & (0b11110000)) >> 4;
+    //特技 避 攻 武 智 术 offset12 80/40/20/10/08
+    skillBiGongWuZhiShu = static_cast<quint8>(static_cast<quint8>(data.at(12)) & (0b11111000)) >> 3;
     //特技 返 魂 觉 offset13 80/40/20
     skillFanHunJue = static_cast<quint8>(static_cast<quint8>(data.at(13)) & (0b11100000)) >> 5;
     //掉宝流派 offset13 0x00-0x1F
@@ -56,8 +56,8 @@ Commander& Commander::update() {
     data[6] = static_cast<char>(wofangliupai);
     //特技 仁 慧 挡 offset7 80/40/20
     data[7] = (data[7] & (0b00011111)) | static_cast<char>(skillRenHuiDang << 5);
-    //特技 避 攻 武 智 offset12 80/40/20/10
-    data[12] = (data[12] & (0x0F)) | static_cast<char>(skillBiGongWuZhi << 4);
+    //特技 避 攻 武 智 术 offset12 80/40/20/10/08
+    data[12] = (data[12] & (0x07)) | static_cast<char>(skillBiGongWuZhiShu << 3);
     //特技 返 魂 觉 offset13 80/40/20
     //掉宝流派 offset13 0x00-0x1F
     data[13] = static_cast<char>(skillFanHunJue << 5) + static_cast<char>(diaobaoliupai);

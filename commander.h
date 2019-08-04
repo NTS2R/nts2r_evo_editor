@@ -18,7 +18,7 @@ public:
     quint8 difangliupai;
 
     quint8 skillRenHuiDang;
-    quint8 skillBiGongWuZhi;
+    quint8 skillBiGongWuZhiShu;
     quint8 skillFanHunJue;
     quint8 skillFangMouYiLin;
     quint8 skillShiFenTongMing;
