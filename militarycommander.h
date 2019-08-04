@@ -17,9 +17,14 @@ public slots:
     void refreshMiliaryCommanderToListView();
 private:
     void setCommanderList();
+    void setSkillCheckBox(Commander const& commander);
+    Commander updateCommander(Commander const& commander);
+    void saveNesFile();
 
 private slots:
     void setCurrentItem();
+    void on_saveButton_clicked();
+
 private:
     constexpr static int base_address = 0x64010;
     constexpr static int low_index_address = 0x6DE10;

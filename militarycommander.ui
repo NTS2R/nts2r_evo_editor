@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
+    <width>900</width>
     <height>523</height>
    </rect>
   </property>
@@ -55,10 +55,10 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>30</y>
-     <width>100</width>
-     <height>171</height>
+     <x>190</x>
+     <y>10</y>
+     <width>120</width>
+     <height>201</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -127,10 +127,10 @@
   <widget class="QWidget" name="gridLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>30</y>
+     <x>330</x>
+     <y>10</y>
      <width>160</width>
-     <height>61</height>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
@@ -159,20 +159,30 @@
   <widget class="QWidget" name="gridLayoutWidget_3">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>110</y>
-     <width>125</width>
-     <height>91</height>
+     <x>330</x>
+     <y>90</y>
+     <width>146</width>
+     <height>111</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="1">
      <widget class="QPlainTextEdit" name="difangliupaiText"/>
     </item>
+    <item row="2" column="1">
+     <widget class="QPlainTextEdit" name="diaobaoliupaiText"/>
+    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_9">
       <property name="text">
        <string>我方流派</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>掉宝流派</string>
       </property>
      </widget>
     </item>
@@ -186,16 +196,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_11">
-      <property name="text">
-       <string>掉宝流派</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QPlainTextEdit" name="diaobaoliupaiText"/>
-    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="gridLayoutWidget_4">
@@ -204,7 +204,7 @@
      <x>500</x>
      <y>100</y>
      <width>191</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_4">
@@ -223,10 +223,10 @@
   <widget class="QWidget" name="gridLayoutWidget_5">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>30</y>
-     <width>91</width>
-     <height>61</height>
+     <x>510</x>
+     <y>10</y>
+     <width>146</width>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_5">
@@ -251,6 +251,157 @@
      <widget class="QPlainTextEdit" name="chtNameControlText"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>210</y>
+     <width>361</width>
+     <height>169</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="7" column="0">
+     <widget class="QCheckBox" name="skillMing">
+      <property name="text">
+       <string>命</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QCheckBox" name="skillJue">
+      <property name="text">
+       <string>觉</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="skillFan">
+      <property name="text">
+       <string>返</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QCheckBox" name="skillWu">
+      <property name="text">
+       <string>武</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="skillBi">
+      <property name="text">
+       <string>避</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="skillGong">
+      <property name="text">
+       <string>攻</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QCheckBox" name="skillHui">
+      <property name="text">
+       <string>慧</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QCheckBox" name="skillZhi">
+      <property name="text">
+       <string>智</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="skillRen">
+      <property name="text">
+       <string>仁</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QCheckBox" name="skillHun">
+      <property name="text">
+       <string>魂</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QCheckBox" name="skillDang">
+      <property name="text">
+       <string>挡</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QCheckBox" name="skillTong">
+      <property name="text">
+       <string>统</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QCheckBox" name="skillFen">
+      <property name="text">
+       <string>奋</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QCheckBox" name="skillShi">
+      <property name="text">
+       <string>识</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QCheckBox" name="skillFang">
+      <property name="text">
+       <string>防</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QCheckBox" name="skillMou">
+      <property name="text">
+       <string>谋</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QCheckBox" name="skillYi">
+      <property name="text">
+       <string>医</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QCheckBox" name="skillLin">
+      <property name="text">
+       <string>临</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="saveButton">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>110</y>
+     <width>80</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>保存</string>
+   </property>
   </widget>
  </widget>
  <resources/>

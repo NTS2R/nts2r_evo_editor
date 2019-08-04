@@ -3,12 +3,11 @@
 
 #include <QByteArray>
 #include <QString>
-class Commander
+struct Commander
 {
 public:
-    explicit Commander();
     void setCommanderAttribute(QByteArray data);
-
+    Commander& update();
     quint8 color;
     quint8 chapter;
     quint8 model;
@@ -17,6 +16,13 @@ public:
     quint8 sudu;
     quint8 wofangliupai;
     quint8 difangliupai;
+
+    quint8 skillRenHuiDang;
+    quint8 skillBiGongWuZhi;
+    quint8 skillFanHunJue;
+    quint8 skillFangMouYiLin;
+    quint8 skillShiFenTongMing;
+
     quint8 diaobaoliupai;
     QString face;
     quint8 faceControl;

@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     militaryCommander->setVisible(true);
 
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
-
+    ui->tabWidget->resize(militaryCommander->size());
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
 }
