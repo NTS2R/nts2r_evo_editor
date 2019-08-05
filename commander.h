@@ -20,7 +20,7 @@ public:
     quint8 skillRenHuiDang;
     quint8 skillBiGongWuZhiShu;
     quint8 skillFanHunJue;
-    quint8 skillFangMouYiLin;
+    quint8 skillFangMouLiaoLin;
     quint8 skillShiFenTongMing;
 
     quint8 diaobaoliupai;

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>680</x>
@@ -299,9 +299,9 @@
           </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QCheckBox" name="skillYi">
+          <widget class="QCheckBox" name="skillLiao">
            <property name="text">
-            <string>医</string>
+            <string>疗</string>
            </property>
           </widget>
          </item>
@@ -420,7 +420,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit"/>
+        <widget class="QTextEdit" name="dataEdit"/>
        </item>
       </layout>
      </item>
@@ -429,7 +429,7 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>textEdit</tabstop>
+  <tabstop>dataEdit</tabstop>
   <tabstop>commanderList</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>refreshButton</tabstop>
@@ -447,7 +447,7 @@
   <tabstop>faceControlText</tabstop>
   <tabstop>chtNameControlText</tabstop>
   <tabstop>faceText</tabstop>
-  <tabstop>skillYi</tabstop>
+  <tabstop>skillLiao</tabstop>
   <tabstop>skillDang</tabstop>
   <tabstop>skillShu</tabstop>
   <tabstop>skillZhi</tabstop>

@@ -30,10 +30,10 @@ void Commander::setCommanderAttribute(QByteArray data) {
     diaobaoliupai = static_cast<quint8>(data.at(13)) & (0b00011111);
     //脸谱 offset 14 - 19
     face = data.mid(14, 6).toHex(' ');
-    //特技 offset 20 1临2医4谋8防 1命2统4奋8识
-    auto skillFangMouYiLinShiFenTongMing = static_cast<quint8>(data.at(20));
-    skillFangMouYiLin = skillFangMouYiLinShiFenTongMing >> 4;
-    skillShiFenTongMing = skillFangMouYiLinShiFenTongMing & 0xf;
+    //特技 offset 20 1临2疗4谋8防 1命2统4奋8识
+    auto skillFangMouLiaoLinShiFenTongMing = static_cast<quint8>(data.at(20));
+    skillFangMouLiaoLin = skillFangMouLiaoLinShiFenTongMing >> 4;
+    skillShiFenTongMing = skillFangMouLiaoLinShiFenTongMing & 0xf;
     //脸谱控制 & 繁体中文控制
     quint8 offset21 = static_cast<quint8>(data.at(21));
     faceControl = offset21 >> 4;
@@ -67,8 +67,8 @@ Commander& Commander::update() {
         data[14 + i] = static_cast<char>(faceList[i].toUInt(nullptr, 16));
     }
     //特技 offset 20 1临2医4谋8防 1命2统4奋8识
-    data[20] = static_cast<char>((skillFangMouYiLin << 4)+ skillShiFenTongMing);
-    qDebug() << ((skillFangMouYiLin << 4)+ skillShiFenTongMing);
+    data[20] = static_cast<char>((skillFangMouLiaoLin << 4)+ skillShiFenTongMing);
+    qDebug() << ((skillFangMouLiaoLin << 4)+ skillShiFenTongMing);
     //脸谱控制 & 繁体中文控制 offset21
     data[21] = static_cast<char>((faceControl << 4)+ chtNameControl);
     //CHT角色名字 offset22 -24

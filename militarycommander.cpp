@@ -9,6 +9,7 @@ MilitaryCommander::MilitaryCommander(QWidget *parent) : QWidget(parent)
             this, &MilitaryCommander::refreshMiliaryCommanderToListView);
     connect(this->commanderList, &QListWidget::itemSelectionChanged,
             this, &MilitaryCommander::setCurrentItem);
+    dataEdit->setReadOnly(true);
 }
 
 void MilitaryCommander::refreshMiliaryCommanderToListView() {
@@ -74,19 +75,19 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
     skillDang->setChecked(skillRenHuiDang & 0b001);
     auto skillBiGongWuZhiShu = commander.skillBiGongWuZhiShu;
     skillBi->setChecked(skillBiGongWuZhiShu & 0b10000);
-    skillWu->setChecked(skillBiGongWuZhiShu & 0b01000);
-    skillGong->setChecked(skillBiGongWuZhiShu & 0b00100);
+    skillGong->setChecked(skillBiGongWuZhiShu & 0b01000);
+    skillWu->setChecked(skillBiGongWuZhiShu & 0b00100);
     skillZhi->setChecked(skillBiGongWuZhiShu & 0b00010);
     skillShu->setChecked(skillBiGongWuZhiShu & 0b00001);
     auto skillFanHunJue = commander.skillFanHunJue;
     skillFan->setChecked(skillFanHunJue & 0b100);
     skillHun->setChecked(skillFanHunJue & 0b010);
     skillJue->setChecked(skillFanHunJue & 0b001);
-    auto skillFangMouYiLin = commander.skillFangMouYiLin;
-    skillFang->setChecked(skillFangMouYiLin & 0b1000);
-    skillMou->setChecked(skillFangMouYiLin & 0b0100);
-    skillYi->setChecked(skillFangMouYiLin & 0b0010);
-    skillLin->setChecked(skillFangMouYiLin & 0b0001);
+    auto skillFangMouLiaoLin = commander.skillFangMouLiaoLin;
+    skillFang->setChecked(skillFangMouLiaoLin & 0b1000);
+    skillMou->setChecked(skillFangMouLiaoLin & 0b0100);
+    skillLiao->setChecked(skillFangMouLiaoLin & 0b0010);
+    skillLin->setChecked(skillFangMouLiaoLin & 0b0001);
     auto skillShiFenTongMing = commander.skillShiFenTongMing;
     skillShi->setChecked(skillShiFenTongMing & 0b1000);
     skillFen->setChecked(skillShiFenTongMing & 0b0100);
@@ -97,7 +98,7 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
 void MilitaryCommander::setCurrentItem() {
     auto index = commanderList->currentRow();
     auto commander = commanderVector[index];
-    textEdit->setText(commander.data.toHex(' ').toUpper());
+    dataEdit->setText(commander.data.toHex(' ').toUpper());
     //智力
     zhiliText->setText(QString("%1").arg(commander.zhili));
     //武力
@@ -146,8 +147,8 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
             (static_cast<quint8>(skillDang->isChecked())));
     newCommander.skillRenHuiDang = skillRenHuiDang;
     quint8 skillBiGongWuZhiShu = static_cast<quint8>((static_cast<quint8>(skillBi->isChecked()) << 4) |
-            (static_cast<quint8>(skillWu->isChecked()) << 3) |
-            (static_cast<quint8>(skillGong->isChecked()) << 2) |
+            (static_cast<quint8>(skillGong->isChecked()) << 3) |
+            (static_cast<quint8>(skillWu->isChecked()) << 2) |
             (static_cast<quint8>(skillZhi->isChecked()) << 1) |
             (static_cast<quint8>(skillShu->isChecked())));
     newCommander.skillBiGongWuZhiShu = skillBiGongWuZhiShu;
@@ -159,9 +160,9 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
 
     quint8 skillFangMouYiLin = static_cast<quint8>((static_cast<quint8>(skillFang->isChecked()) << 3) |
             (static_cast<quint8>(skillMou->isChecked()) << 2) |
-            (static_cast<quint8>(skillYi->isChecked()) << 1) |
+            (static_cast<quint8>(skillLiao->isChecked()) << 1) |
             (static_cast<quint8>(skillLin->isChecked())));
-    newCommander.skillFangMouYiLin = skillFangMouYiLin;
+    newCommander.skillFangMouLiaoLin = skillFangMouYiLin;
 
     quint8 skillShiFenTongMing = static_cast<quint8>((static_cast<quint8>(skillShi->isChecked()) << 3) |
             (static_cast<quint8>(skillFen->isChecked()) << 2) |
