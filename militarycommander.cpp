@@ -35,8 +35,11 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
             if (static_cast<quint8>(value) == static_cast<quint8>(0xFF))
                 break;
         }
+        QByteArray commanderAnimation;
+        commanderAnimation.append(nes.at(attack_animation_address + index));
+        commanderAnimation.append(nes.at(dead_animation_address + index));
         Commander commanderData;
-        commanderData.setCommanderAttribute(commanderValue);
+        commanderData.setCommanderAttribute(commanderValue, commanderAnimation);
         commanderVector.push_back(commanderData);
     }
     setCommanderList();
@@ -54,6 +57,8 @@ void MilitaryCommander::saveNesFile() {
         for (int i = 0; i < byteArray.length(); i++) {
             nes[commanderAddress + i] = byteArray[i];
         }
+        nes[attack_animation_address + index] = static_cast<char>(commanderVector[index].attackAnimation);
+        nes[dead_animation_address + index] = static_cast<char>(commanderVector[index].deadAnimation);
     }
 }
 
@@ -123,6 +128,9 @@ void MilitaryCommander::setCurrentItem() {
     traditionalNameText->setText(commander.chtName.toUpper());
     chtNameControlText->setPlainText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
     setSkillCheckBox(commander);
+
+    attackAnimationTextEdit->setText(QString("%1").arg(commander.attackAnimation, 2, 16, QChar('0')).toUpper());
+    deadAnimationTextEdit->setText(QString("%1").arg(commander.deadAnimation, 2, 16, QChar('0')).toUpper());
 }
 
 Commander MilitaryCommander::updateCommander(const Commander &commander) {
@@ -141,6 +149,8 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.chsName = simpliedNameText->toPlainText();
     newCommander.chtName = traditionalNameText->toPlainText();
     newCommander.chtNameControl = static_cast<quint8>(chtNameControlText->toPlainText().toUInt(nullptr, 16));
+    newCommander.attackAnimation = static_cast<quint8>(attackAnimationTextEdit->toPlainText().toUInt(nullptr, 16));
+    newCommander.deadAnimation = static_cast<quint8>(deadAnimationTextEdit->toPlainText().toUInt(nullptr, 16));
 
     quint8 skillRenHuiDang = static_cast<quint8>((static_cast<quint8>(skillRen->isChecked()) << 2) |
             (static_cast<quint8>(skillHui->isChecked()) << 1) |

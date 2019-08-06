@@ -1,7 +1,7 @@
 #include "commander.h"
 #include "militarycommander.h"
 #include <QDebug>
-void Commander::setCommanderAttribute(QByteArray data) {
+void Commander::setCommanderAttribute(QByteArray data, QByteArray animation) {
     this->data = data;
     quint8 offset0 = static_cast<quint8>(data.at(0));
     //颜色 offset0 low
@@ -42,6 +42,10 @@ void Commander::setCommanderAttribute(QByteArray data) {
     chtName = data.mid(22, 3).toHex(' ');
     //CHS角色名字 offset25 - 最后
     chsName = data.mid(MilitaryCommander::least_length).toHex(' ');
+
+    // Animation
+    attackAnimation = static_cast<quint8>(animation[0]);
+    deadAnimation = static_cast<quint8>(animation[1]);
 }
 
 Commander& Commander::update() {

@@ -6,7 +6,7 @@
 struct Commander
 {
 public:
-    void setCommanderAttribute(QByteArray data);
+    void setCommanderAttribute(QByteArray data, QByteArray animation);
     Commander& update();
     quint8 color;
     quint8 chapter;
@@ -30,6 +30,9 @@ public:
     QString chtName;
     QString chsName;
     QByteArray data;
+
+    quint8 attackAnimation;
+    quint8 deadAnimation;
 };
 
 #endif // COMMANDER_H

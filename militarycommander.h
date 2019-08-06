@@ -30,6 +30,8 @@ private:
     constexpr static int low_index_address = 0x6DE10;
     constexpr static int hight_index_address = 0x6DF10;
 
+    constexpr static int attack_animation_address = 0x52281;
+    constexpr static int dead_animation_address = 0x531B6;
     QVector<Commander> commanderVector;
 };
 
