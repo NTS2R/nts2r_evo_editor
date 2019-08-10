@@ -22,6 +22,7 @@ public:
     quint8 skillFanHunJue;
     quint8 skillFangMouLiaoLin;
     quint8 skillShiFenTongMing;
+    quint8 skillQi;
 
     quint8 diaobaoliupai;
     QString face;

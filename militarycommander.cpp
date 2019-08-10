@@ -98,6 +98,8 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
     skillFen->setChecked(skillShiFenTongMing & 0b0100);
     skillTong->setChecked(skillShiFenTongMing & 0b0010);
     skillMing->setChecked(skillShiFenTongMing & 0b0001);
+
+    skillQi->setChecked(commander.skillQi & 1);
 }
 
 void MilitaryCommander::setCurrentItem() {
@@ -179,7 +181,7 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
             (static_cast<quint8>(skillTong->isChecked()) << 1) |
             (static_cast<quint8>(skillMing->isChecked())));
     newCommander.skillShiFenTongMing = skillShiFenTongMing;
-
+    newCommander.skillQi = static_cast<quint8>(skillQi->isChecked());
     return newCommander.update();
 }
 

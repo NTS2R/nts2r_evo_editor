@@ -19,7 +19,9 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation) {
     //敌方流派 offset5
     difangliupai = static_cast<quint8>(data.at(5));
     //我方流派 offset6
-    wofangliupai = static_cast<quint8>(data.at(6));
+    auto wofangliupaiAndQi = static_cast<quint8>(data.at(6));
+    wofangliupai = wofangliupaiAndQi & 0x7F;
+    skillQi = (wofangliupaiAndQi & 0x80) >> 7;
     //特技 仁 慧 挡 offset7 80/40/20
     skillRenHuiDang = static_cast<quint8>(static_cast<quint8>(data.at(7)) & (0b11100000)) >> 5;
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
@@ -57,7 +59,7 @@ Commander& Commander::update() {
     data[3] = static_cast<char>(wuli);
     data[4] = static_cast<char>(sudu);
     data[5] = static_cast<char>(difangliupai);
-    data[6] = static_cast<char>(wofangliupai);
+    data[6] = static_cast<char>(wofangliupai | skillQi << 7);
     //特技 仁 慧 挡 offset7 80/40/20
     data[7] = (data[7] & (0b00011111)) | static_cast<char>(skillRenHuiDang << 5);
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
