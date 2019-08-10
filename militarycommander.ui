@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>550</height>
+    <height>820</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,20 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QListWidget" name="commanderList"/>
+      <widget class="QListWidget" name="commanderList">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -97,35 +110,12 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>速度</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
               <string>模型</string>
              </property>
             </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QTextEdit" name="zhiliText"/>
-           </item>
-           <item row="4" column="1">
-            <widget class="QTextEdit" name="wuliText"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>武力</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QTextEdit" name="modelText"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_5">
@@ -135,25 +125,15 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QTextEdit" name="colorText"/>
+            <widget class="QLineEdit" name="colorText"/>
            </item>
-           <item row="0" column="1">
-            <widget class="QPlainTextEdit" name="dataAddressPlainTextEdit"/>
-           </item>
-           <item row="6" column="1">
-            <widget class="QTextEdit" name="suduText"/>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="zhiliText"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_17">
              <property name="text">
               <string>地址</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>颜色</string>
              </property>
             </widget>
            </item>
@@ -164,118 +144,181 @@
              </property>
             </widget>
            </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>速度</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="dataAddressText"/>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="dixingText"/>
+           </item>
            <item row="1" column="1">
-            <widget class="QTextEdit" name="chapterText"/>
+            <widget class="QLineEdit" name="chapterText"/>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="suduText"/>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>武力</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>地形</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="modelText"/>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="wuliText"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>颜色</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QLineEdit" name="jiceText"/>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>计策</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="1">
+            <widget class="QTextEdit" name="traditionalNameText"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>繁体名字</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QTextEdit" name="simpliedNameText"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>简体名字</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <item row="0" column="1">
-              <widget class="QTextEdit" name="traditionalNameText"/>
-             </item>
-             <item row="1" column="1">
-              <widget class="QTextEdit" name="simpliedNameText"/>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>繁体名字</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>简体名字</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="4" column="1">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>掉宝流派</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPlainTextEdit" name="diaobaoliupaiText"/>
-             </item>
-             <item row="1" column="1">
-              <widget class="QPlainTextEdit" name="difangliupaiText"/>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPlainTextEdit" name="wofangliupaiText"/>
-             </item>
-             <item row="0" column="2">
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>敌方流派</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>我方流派</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <spacer name="verticalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>敌方流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>我方流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>100</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>掉宝流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="weaponText"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>武器</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="wofangliupaiText"/>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="difangliupaiText"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="diaobaoliupaiText"/>
            </item>
           </layout>
          </item>
@@ -284,71 +327,98 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::MinimumExpanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>50</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout_5">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>攻击动画</string>
-             </property>
-            </widget>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="gongjiliText"/>
            </item>
-           <item row="0" column="1">
-            <widget class="QPlainTextEdit" name="faceControlText"/>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="moulvezhiText"/>
            </item>
-           <item row="3" column="0">
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="chtNameControlText"/>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="deadAnimationTextEdit"/>
+           </item>
+           <item row="7" column="0">
             <widget class="QLabel" name="label_16">
              <property name="text">
               <string>死亡动画</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QTextEdit" name="deadAnimationTextEdit"/>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="faceControlText"/>
            </item>
-           <item row="0" column="0">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>敌人谋略值</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>攻击动画</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="attackAnimationTextEdit"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>敌人防御力</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>敌人攻击力</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="jimouText"/>
+           </item>
+           <item row="4" column="0">
             <widget class="QLabel" name="label_13">
              <property name="text">
               <string>脸谱控制</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QPlainTextEdit" name="chtNameControlText"/>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="fangyuliText"/>
            </item>
-           <item row="1" column="0">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>敌人计谋</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
             <widget class="QLabel" name="label_14">
              <property name="text">
               <string>繁体控制</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QTextEdit" name="attackAnimationTextEdit"/>
-           </item>
-           <item row="0" column="2">
+           <item row="4" column="2">
             <spacer name="horizontalSpacer">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>60</width>
                <height>20</height>
               </size>
              </property>
@@ -371,22 +441,6 @@
           </layout>
          </item>
         </layout>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>100</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>
@@ -550,19 +604,8 @@
   <tabstop>commanderList</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>refreshButton</tabstop>
-  <tabstop>chapterText</tabstop>
-  <tabstop>suduText</tabstop>
-  <tabstop>wuliText</tabstop>
-  <tabstop>colorText</tabstop>
-  <tabstop>modelText</tabstop>
-  <tabstop>zhiliText</tabstop>
   <tabstop>traditionalNameText</tabstop>
   <tabstop>simpliedNameText</tabstop>
-  <tabstop>difangliupaiText</tabstop>
-  <tabstop>diaobaoliupaiText</tabstop>
-  <tabstop>wofangliupaiText</tabstop>
-  <tabstop>faceControlText</tabstop>
-  <tabstop>chtNameControlText</tabstop>
   <tabstop>faceText</tabstop>
   <tabstop>skillLiao</tabstop>
   <tabstop>skillDang</tabstop>

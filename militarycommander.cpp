@@ -52,7 +52,7 @@ void MilitaryCommander::saveNesFile() {
     for (int index = 0x00; index <= 0xFF; ++index) {
         int commanderAddress = commanderVector[index].dataAddress;
         quint8 lowAddress = (commanderAddress - baseAddress) & 0xFF;
-        quint8 highAddress = ((commanderAddress - baseAddress) & 0xFF00) >> 16;
+        quint8 highAddress = ((commanderAddress - baseAddress) & 0xFF00) >> 8;
         nes[lowIndexAddress + index] = static_cast<char>(lowAddress);
         nes[highIndexAdddress + index] = static_cast<char>(highAddress);
         auto byteArray = commanderVector[index].data;
@@ -107,7 +107,7 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
 void MilitaryCommander::setCurrentItem() {
     auto index = commanderList->currentRow();
     auto commander = commanderVector[index];
-    dataAddressPlainTextEdit->setPlainText(QString("%1").arg(commander.dataAddress, 5, 16).toUpper());
+    dataAddressText->setText(QString("%1").arg(commander.dataAddress, 5, 16).toUpper());
     dataEdit->setText(commander.data.toHex(' ').toUpper());
     //智力
     zhiliText->setText(QString("%1").arg(commander.zhili));
@@ -121,17 +121,23 @@ void MilitaryCommander::setCurrentItem() {
     chapterText->setText(QString("%1").arg(commander.chapter, 0, 16).toUpper());
     //模型
     modelText->setText(QString("%1").arg(commander.model, 0, 16).toUpper());
-
-    wofangliupaiText->setPlainText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')).toUpper());
-    difangliupaiText->setPlainText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')).toUpper());
-    diaobaoliupaiText->setPlainText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')).toUpper());
+    dixingText->setText(QString("%1").arg(commander.dixing, 0, 16).toUpper());
+    jiceText->setText(QString("%1").arg(commander.jice, 0, 16).toUpper());
+    gongjiliText->setText(QString("%1").arg(commander.gongjili));
+    fangyuliText->setText(QString("%1").arg(commander.fangyuli));
+    wofangliupaiText->setText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')).toUpper());
+    difangliupaiText->setText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')).toUpper());
+    diaobaoliupaiText->setText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')).toUpper());
     faceText->setPlainText(commander.face.toUpper());
-    faceControlText->setPlainText(QString("%1").arg(commander.faceControl, 0, 16).toUpper());
+    faceControlText->setText(QString("%1").arg(commander.faceControl, 0, 16).toUpper());
+    moulvezhiText->setText(QString("%1").arg(commander.moulvezhi));
+    jimouText->setText(QString("%1").arg(commander.jimou));
+    weaponText->setText(QString("%1").arg(commander.weapon));
     //CHS角色名字 offset25 - 最后
     simpliedNameText->setText(commander.chsName.toUpper());
     //CHT角色名字 offset22 -24
     traditionalNameText->setText(commander.chtName.toUpper());
-    chtNameControlText->setPlainText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
+    chtNameControlText->setText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
     setSkillCheckBox(commander);
 
     attackAnimationTextEdit->setText(QString("%1").arg(commander.attackAnimation, 2, 16, QChar('0')).toUpper());
@@ -140,24 +146,30 @@ void MilitaryCommander::setCurrentItem() {
 
 Commander MilitaryCommander::updateCommander(const Commander &commander) {
     auto newCommander = commander;
-    newCommander.dataAddress = dataAddressPlainTextEdit->toPlainText().toInt(nullptr, 16);
-    newCommander.zhili = static_cast<quint8>(zhiliText->toPlainText().toUInt());
-    newCommander.wuli = static_cast<quint8>(wuliText->toPlainText().toUInt());
-    newCommander.sudu = static_cast<quint8>(suduText->toPlainText().toUInt());
-    newCommander.color = static_cast<quint8>(colorText->toPlainText().toUInt(nullptr, 16));
-    newCommander.chapter = static_cast<quint8>(chapterText->toPlainText().toUInt(nullptr, 16));
-    newCommander.model = static_cast<quint8>(modelText->toPlainText().toUInt(nullptr, 16));
-    newCommander.wofangliupai = static_cast<quint8>(wofangliupaiText->toPlainText().toUInt(nullptr, 16));
-    newCommander.difangliupai = static_cast<quint8>(difangliupaiText->toPlainText().toUInt(nullptr, 16));
-    newCommander.diaobaoliupai = static_cast<quint8>(diaobaoliupaiText->toPlainText().toUInt(nullptr, 16));
+    newCommander.dataAddress = dataAddressText->text().toInt(nullptr, 16);
+    newCommander.zhili = static_cast<quint8>(zhiliText->text().toUInt());
+    newCommander.wuli = static_cast<quint8>(wuliText->text().toUInt());
+    newCommander.sudu = static_cast<quint8>(suduText->text().toUInt());
+    newCommander.color = static_cast<quint8>(colorText->text().toUInt(nullptr, 16));
+    newCommander.chapter = static_cast<quint8>(chapterText->text().toUInt(nullptr, 16));
+    newCommander.model = static_cast<quint8>(modelText->text().toUInt(nullptr, 16));
+    newCommander.wofangliupai = static_cast<quint8>(wofangliupaiText->text().toUInt(nullptr, 16));
+    newCommander.difangliupai = static_cast<quint8>(difangliupaiText->text().toUInt(nullptr, 16));
+    newCommander.diaobaoliupai = static_cast<quint8>(diaobaoliupaiText->text().toUInt(nullptr, 16));
     newCommander.face = faceText->toPlainText();
-    newCommander.faceControl = static_cast<quint8>(faceControlText->toPlainText().toUInt(nullptr, 16));
+    newCommander.faceControl = static_cast<quint8>(faceControlText->text().toUInt(nullptr, 16));
     newCommander.chsName = simpliedNameText->toPlainText();
     newCommander.chtName = traditionalNameText->toPlainText();
-    newCommander.chtNameControl = static_cast<quint8>(chtNameControlText->toPlainText().toUInt(nullptr, 16));
-    newCommander.attackAnimation = static_cast<quint8>(attackAnimationTextEdit->toPlainText().toUInt(nullptr, 16));
-    newCommander.deadAnimation = static_cast<quint8>(deadAnimationTextEdit->toPlainText().toUInt(nullptr, 16));
-
+    newCommander.chtNameControl = static_cast<quint8>(chtNameControlText->text().toUInt(nullptr, 16));
+    newCommander.attackAnimation = static_cast<quint8>(attackAnimationTextEdit->text().toUInt(nullptr, 16));
+    newCommander.deadAnimation = static_cast<quint8>(deadAnimationTextEdit->text().toUInt(nullptr, 16));
+    newCommander.jice = static_cast<quint8>(jiceText->text().toUInt(nullptr, 16));
+    newCommander.dixing = static_cast<quint8>(dixingText->text().toUInt(nullptr, 16));
+    newCommander.gongjili = static_cast<quint8>(gongjiliText->text().toUInt());
+    newCommander.fangyuli = static_cast<quint8>(fangyuliText->text().toUInt());
+    newCommander.moulvezhi = static_cast<quint8>(moulvezhiText->text().toUInt());
+    newCommander.jimou = static_cast<quint8>(jimouText->text().toUInt());
+    newCommander.weapon = static_cast<quint8>(weaponText->text().toUInt());
     quint8 skillRenHuiDang = static_cast<quint8>((static_cast<quint8>(skillRen->isChecked()) << 2) |
             (static_cast<quint8>(skillHui->isChecked()) << 1) |
             (static_cast<quint8>(skillDang->isChecked())));
@@ -197,7 +209,7 @@ void MilitaryCommander::on_saveButton_clicked()
         qDebug("Invaild rows");
         return;
     }
-    auto dataAddress = dataAddressPlainTextEdit->toPlainText().toInt(nullptr, 16);
+    auto dataAddress = dataAddressText->text().toInt(nullptr, 16);
     if ((dataAddress < baseAddress + 0x8000) || (dataAddress > baseAddress + 0xBFFF)) {
         QMessageBox::warning(nullptr, QString("错误"),
                              QString("人物属性应该在%1-%2的范围内")

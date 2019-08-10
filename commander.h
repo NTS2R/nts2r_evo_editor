@@ -17,6 +17,17 @@ public:
     quint8 sudu;
     quint8 wofangliupai;
     quint8 difangliupai;
+    quint8 dixing;
+    quint8 jice;
+    quint8 direnjimou;
+    quint8 direnmoulvezhi;
+    quint8 direngongjili;
+    quint8 direnfangyuli;
+    quint8 gongjili;
+    quint8 fangyuli;
+    quint8 jimou;
+    quint8 moulvezhi;
+    quint8 weapon;
 
     quint8 skillRenHuiDang;
     quint8 skillBiGongWuZhiShu;

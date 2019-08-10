@@ -24,9 +24,20 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int
     //我方流派 offset6
     wofangliupai = static_cast<quint8>(data.at(6));
     //特技 仁 慧 挡 offset7 80/40/20
-    skillRenHuiDang = static_cast<quint8>(static_cast<quint8>(data.at(7)) & (0b11100000)) >> 5;
+    auto skillRenHuiDangAndJimou = static_cast<quint8>(static_cast<quint8>(data[7]));
+    skillRenHuiDang = skillRenHuiDangAndJimou & (0b11100000) >> 5;
+    jimou = skillRenHuiDangAndJimou & (0b00011111);
+    moulvezhi = static_cast<quint8>(static_cast<quint8>(data[8]));
+    gongjili = static_cast<quint8>(static_cast<quint8>(data[9]));
+    fangyuli = static_cast<quint8>(static_cast<quint8>(data[10]));
+    // 地形 计策
+    auto dixingAndJice = static_cast<quint8>(static_cast<quint8>(data[11]));
+    dixing = (dixingAndJice & 0xF0) >> 4;
+    jice = dixingAndJice & 0x0F;
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
-    skillBiGongWuZhiShu = static_cast<quint8>(static_cast<quint8>(data.at(12)) & (0b11111000)) >> 3;
+    auto skillBiGongWuZhiShuAndWeapon = static_cast<quint8>(data.at(12));
+    weapon = skillBiGongWuZhiShuAndWeapon & 0b00000111;
+    skillBiGongWuZhiShu = (skillBiGongWuZhiShuAndWeapon & (0b11111000)) >> 3;
     //特技 返 魂 觉 offset13 80/40/20
     skillFanHunJue = static_cast<quint8>(static_cast<quint8>(data.at(13)) & (0b11100000)) >> 5;
     //掉宝流派 offset13 0x00-0x1F
@@ -62,12 +73,16 @@ Commander& Commander::update() {
     data[5] = static_cast<char>(difangliupai  | skillQi << 7);
     data[6] = static_cast<char>(wofangliupai);
     //特技 仁 慧 挡 offset7 80/40/20
-    data[7] = (data[7] & (0b00011111)) | static_cast<char>(skillRenHuiDang << 5);
+    data[7] = static_cast<char>((skillRenHuiDang << 5) | jimou);
+    data[8] = static_cast<char>(moulvezhi);
+    data[9] = static_cast<char>(gongjili);
+    data[10] = static_cast<char>(fangyuli);
+    data[11] = static_cast<char>((dixing << 4) + jice);
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
-    data[12] = (data[12] & (0x07)) | static_cast<char>(skillBiGongWuZhiShu << 3);
+    data[12] = static_cast<char>((skillBiGongWuZhiShu << 3) | weapon);
     //特技 返 魂 觉 offset13 80/40/20
     //掉宝流派 offset13 0x00-0x1F
-    data[13] = static_cast<char>(skillFanHunJue << 5) + static_cast<char>(diaobaoliupai);
+    data[13] = static_cast<char>((skillFanHunJue << 5) | diaobaoliupai);
     //脸谱 offset 14 - 19
     auto faceList = face.split(' ');
     for (int i = 0; i < 6; i++) {
