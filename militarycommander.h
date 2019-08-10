@@ -12,7 +12,7 @@ class MilitaryCommander : public QWidget, public Ui::MilitaryCommander
     Q_OBJECT
 public:
     explicit MilitaryCommander(QWidget *parent = nullptr);
-    constexpr static int least_length = 25;
+    constexpr static int leastLength = 25;
 public slots:
     void refreshMiliaryCommanderToListView();
 private:
@@ -26,12 +26,12 @@ private slots:
     void on_saveButton_clicked();
 
 private:
-    constexpr static int base_address = 0x64010;
-    constexpr static int low_index_address = 0x6DE10;
-    constexpr static int hight_index_address = 0x6DF10;
+    constexpr static int baseAddress = 0x64010;
+    constexpr static int lowIndexAddress = 0x6DE10;
+    constexpr static int highIndexAdddress = 0x6DF10;
 
-    constexpr static int attack_animation_address = 0x52281;
-    constexpr static int dead_animation_address = 0x531B6;
+    constexpr static int attackAnimationAddress = 0x52281;
+    constexpr static int deadAnimationAddress = 0x531B6;
     QVector<Commander> commanderVector;
 };
 

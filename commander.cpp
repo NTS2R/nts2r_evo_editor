@@ -1,8 +1,9 @@
 #include "commander.h"
 #include "militarycommander.h"
 #include <QDebug>
-void Commander::setCommanderAttribute(QByteArray data, QByteArray animation) {
+void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress) {
     this->data = data;
+    this->dataAddress = dataAddress;
     quint8 offset0 = static_cast<quint8>(data.at(0));
     //颜色 offset0 low
     color = offset0 & 0xf;
@@ -17,11 +18,11 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation) {
     //速度 offset4
     sudu = static_cast<quint8>(data.at(4));
     //敌方流派 offset5
-    difangliupai = static_cast<quint8>(data.at(5));
+    auto difangliupaiAndQi = static_cast<quint8>(data.at(5));
+    difangliupai = difangliupaiAndQi & 0x7F;
+    skillQi = (difangliupaiAndQi & 0x80) >> 7;
     //我方流派 offset6
-    auto wofangliupaiAndQi = static_cast<quint8>(data.at(6));
-    wofangliupai = wofangliupaiAndQi & 0x7F;
-    skillQi = (wofangliupaiAndQi & 0x80) >> 7;
+    wofangliupai = static_cast<quint8>(data.at(6));
     //特技 仁 慧 挡 offset7 80/40/20
     skillRenHuiDang = static_cast<quint8>(static_cast<quint8>(data.at(7)) & (0b11100000)) >> 5;
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
@@ -43,7 +44,7 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation) {
     //CHT角色名字 offset22 -24
     chtName = data.mid(22, 3).toHex(' ');
     //CHS角色名字 offset25 - 最后
-    chsName = data.mid(MilitaryCommander::least_length).toHex(' ');
+    chsName = data.mid(MilitaryCommander::leastLength).toHex(' ');
 
     // Animation
     attackAnimation = static_cast<quint8>(animation[0]);
@@ -58,8 +59,8 @@ Commander& Commander::update() {
     data[2] = static_cast<char>(zhili);
     data[3] = static_cast<char>(wuli);
     data[4] = static_cast<char>(sudu);
-    data[5] = static_cast<char>(difangliupai);
-    data[6] = static_cast<char>(wofangliupai | skillQi << 7);
+    data[5] = static_cast<char>(difangliupai  | skillQi << 7);
+    data[6] = static_cast<char>(wofangliupai);
     //特技 仁 慧 挡 offset7 80/40/20
     data[7] = (data[7] & (0b00011111)) | static_cast<char>(skillRenHuiDang << 5);
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08

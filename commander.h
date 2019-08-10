@@ -6,8 +6,9 @@
 struct Commander
 {
 public:
-    void setCommanderAttribute(QByteArray data, QByteArray animation);
+    void setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress);
     Commander& update();
+    int dataAddress;
     quint8 color;
     quint8 chapter;
     quint8 model;

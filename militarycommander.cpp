@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QDebug>
 #include <QListWidget>
+#include <QMessageBox>
 MilitaryCommander::MilitaryCommander(QWidget *parent) : QWidget(parent)
 {
     this->setupUi(this);
@@ -19,16 +20,16 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
     auto& nes = MainWindow::nesFileByteArray;
 
     for (int index = 0x00; index <= 0xFF; ++index) {
-        quint8 low_address = static_cast<quint8>(nes.at(low_index_address + index));
-        quint8 high_address = static_cast<quint8>(nes.at(hight_index_address + index));
+        quint8 low_address = static_cast<quint8>(nes.at(lowIndexAddress + index));
+        quint8 high_address = static_cast<quint8>(nes.at(highIndexAdddress + index));
 //        qDebug() << QString("low: %1, high: %2").arg(low_address).arg(high_address);
-        int commanderAddress = base_address + high_address * 0x100 + low_address;
+        int commanderAddress = baseAddress + high_address * 0x100 + low_address;
 
         QByteArray commanderValue;
-        for (int i = 0; i < least_length; ++i) {
+        for (int i = 0; i < leastLength; ++i) {
             commanderValue.append(nes.at(commanderAddress + i));
         }
-        int startIndex = least_length;
+        int startIndex = leastLength;
         while (true) {
             auto value = nes.at(commanderAddress + startIndex++);
             commanderValue.append(value);
@@ -36,10 +37,10 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
                 break;
         }
         QByteArray commanderAnimation;
-        commanderAnimation.append(nes.at(attack_animation_address + index));
-        commanderAnimation.append(nes.at(dead_animation_address + index));
+        commanderAnimation.append(nes.at(attackAnimationAddress + index));
+        commanderAnimation.append(nes.at(deadAnimationAddress + index));
         Commander commanderData;
-        commanderData.setCommanderAttribute(commanderValue, commanderAnimation);
+        commanderData.setCommanderAttribute(commanderValue, commanderAnimation, commanderAddress);
         commanderVector.push_back(commanderData);
     }
     setCommanderList();
@@ -49,16 +50,17 @@ void MilitaryCommander::saveNesFile() {
     auto& nes = MainWindow::nesFileByteArray;
 
     for (int index = 0x00; index <= 0xFF; ++index) {
-        quint8 low_address = static_cast<quint8>(nes.at(low_index_address + index));
-        quint8 high_address = static_cast<quint8>(nes.at(hight_index_address + index));
-//        qDebug() << QString("low: %1, high: %2").arg(low_address).arg(high_address);
-        int commanderAddress = base_address + high_address * 0x100 + low_address;
+        int commanderAddress = commanderVector[index].dataAddress;
+        quint8 lowAddress = (commanderAddress - baseAddress) & 0xFF;
+        quint8 highAddress = ((commanderAddress - baseAddress) & 0xFF00) >> 16;
+        nes[lowIndexAddress + index] = static_cast<char>(lowAddress);
+        nes[highIndexAdddress + index] = static_cast<char>(highAddress);
         auto byteArray = commanderVector[index].data;
         for (int i = 0; i < byteArray.length(); i++) {
             nes[commanderAddress + i] = byteArray[i];
         }
-        nes[attack_animation_address + index] = static_cast<char>(commanderVector[index].attackAnimation);
-        nes[dead_animation_address + index] = static_cast<char>(commanderVector[index].deadAnimation);
+        nes[attackAnimationAddress + index] = static_cast<char>(commanderVector[index].attackAnimation);
+        nes[deadAnimationAddress + index] = static_cast<char>(commanderVector[index].deadAnimation);
     }
 }
 
@@ -105,6 +107,7 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
 void MilitaryCommander::setCurrentItem() {
     auto index = commanderList->currentRow();
     auto commander = commanderVector[index];
+    dataAddressPlainTextEdit->setPlainText(QString("%1").arg(commander.dataAddress, 5, 16).toUpper());
     dataEdit->setText(commander.data.toHex(' ').toUpper());
     //智力
     zhiliText->setText(QString("%1").arg(commander.zhili));
@@ -137,6 +140,7 @@ void MilitaryCommander::setCurrentItem() {
 
 Commander MilitaryCommander::updateCommander(const Commander &commander) {
     auto newCommander = commander;
+    newCommander.dataAddress = dataAddressPlainTextEdit->toPlainText().toInt(nullptr, 16);
     newCommander.zhili = static_cast<quint8>(zhiliText->toPlainText().toUInt());
     newCommander.wuli = static_cast<quint8>(wuliText->toPlainText().toUInt());
     newCommander.sudu = static_cast<quint8>(suduText->toPlainText().toUInt());
@@ -193,6 +197,15 @@ void MilitaryCommander::on_saveButton_clicked()
         qDebug("Invaild rows");
         return;
     }
+    auto dataAddress = dataAddressPlainTextEdit->toPlainText().toInt(nullptr, 16);
+    if ((dataAddress < baseAddress + 0x8000) || (dataAddress > baseAddress + 0xBFFF)) {
+        QMessageBox::warning(nullptr, QString("错误"),
+                             QString("人物属性应该在%1-%2的范围内")
+                             .arg(baseAddress + 0x8000, 5, 16)
+                             .arg(baseAddress + 0xBFFF, 5, 16));
+        return;
+    }
+
     auto commander = commanderVector[index];
     commanderVector[index] = updateCommander(commander);
     saveNesFile();
