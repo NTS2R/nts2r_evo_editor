@@ -6,7 +6,7 @@
 struct Commander
 {
 public:
-    void setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress);
+    void setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress, QByteArray dajiangData);
     Commander& update();
     int dataAddress;
     quint8 color;
@@ -28,6 +28,8 @@ public:
     quint8 jimou;
     quint8 moulvezhi;
     quint8 weapon;
+    quint8 dajiang;
+    quint8 gong, fang, ming, bi;
 
     quint8 skillRenHuiDang;
     quint8 skillBiGongWuZhiShu;

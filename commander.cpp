@@ -1,9 +1,14 @@
 #include "commander.h"
 #include "militarycommander.h"
 #include <QDebug>
-void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress) {
+void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int dataAddress, QByteArray dajiangData) {
     this->data = data;
     this->dataAddress = dataAddress;
+    this->dajiang = static_cast<quint8>(dajiangData[0]);
+    gong = static_cast<quint8>(dajiangData[1]);
+    fang = static_cast<quint8>(dajiangData[2]);
+    ming = static_cast<quint8>(dajiangData[3]);
+    bi = static_cast<quint8>(dajiangData[4]);
     quint8 offset0 = static_cast<quint8>(data.at(0));
     //颜色 offset0 low
     color = offset0 & 0xf;

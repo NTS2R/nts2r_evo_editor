@@ -40,7 +40,13 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
         commanderAnimation.append(nes.at(attackAnimationAddress + index));
         commanderAnimation.append(nes.at(deadAnimationAddress + index));
         Commander commanderData;
-        commanderData.setCommanderAttribute(commanderValue, commanderAnimation, commanderAddress);
+        QByteArray dajiang;
+        dajiang.append(nes[daJiangAdddress + index]);
+        dajiang.append(nes[gongAdddress + index]);
+        dajiang.append(nes[fangAdddress + index]);
+        dajiang.append(nes[mingAdddress + index]);
+        dajiang.append(nes[biAdddress + index]);
+        commanderData.setCommanderAttribute(commanderValue, commanderAnimation, commanderAddress, dajiang);
         commanderVector.push_back(commanderData);
     }
     setCommanderList();
@@ -61,6 +67,11 @@ void MilitaryCommander::saveNesFile() {
         }
         nes[attackAnimationAddress + index] = static_cast<char>(commanderVector[index].attackAnimation);
         nes[deadAnimationAddress + index] = static_cast<char>(commanderVector[index].deadAnimation);
+        nes[daJiangAdddress + index] = static_cast<char>(commanderVector[index].dajiang);
+        nes[gongAdddress + index] = static_cast<char>(commanderVector[index].gong);
+        nes[fangAdddress + index] = static_cast<char>(commanderVector[index].fang);
+        nes[mingAdddress + index] = static_cast<char>(commanderVector[index].ming);
+        nes[biAdddress + index] = static_cast<char>(commanderVector[index].bi);
     }
 }
 
@@ -102,6 +113,12 @@ void MilitaryCommander::setSkillCheckBox(const Commander &commander) {
     skillMing->setChecked(skillShiFenTongMing & 0b0001);
 
     skillQi->setChecked(commander.skillQi & 1);
+
+    auto dajiang = commander.dajiang;
+    gongCheck->setChecked(dajiang & 0b10000000);
+    fangCheck->setChecked(dajiang & 0b01000000);
+    mingCheck->setChecked(dajiang & 0b00100000);
+    biCheck->setChecked(dajiang & 0b00010000);
 }
 
 void MilitaryCommander::setCurrentItem() {
@@ -139,6 +156,10 @@ void MilitaryCommander::setCurrentItem() {
     traditionalNameText->setText(commander.chtName.toUpper());
     chtNameControlText->setText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
     setSkillCheckBox(commander);
+    gongText->setText(QString("%1").arg(commander.gong));
+    fangText->setText(QString("%1").arg(commander.fang));
+    mingText->setText(QString("%1").arg(commander.ming));
+    biText->setText(QString("%1").arg(commander.bi));
 
     attackAnimationTextEdit->setText(QString("%1").arg(commander.attackAnimation, 2, 16, QChar('0')).toUpper());
     deadAnimationTextEdit->setText(QString("%1").arg(commander.deadAnimation, 2, 16, QChar('0')).toUpper());
@@ -170,6 +191,16 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.moulvezhi = static_cast<quint8>(moulvezhiText->text().toUInt());
     newCommander.jimou = static_cast<quint8>(jimouText->text().toUInt());
     newCommander.weapon = static_cast<quint8>(weaponText->text().toUInt());
+
+    quint8 dajiang = static_cast<quint8>((static_cast<quint8>(gongCheck->isChecked()) << 7) |
+            (static_cast<quint8>(fangCheck->isChecked()) << 6) |
+            (static_cast<quint8>(mingCheck->isChecked()) << 5) |
+            (static_cast<quint8>(biCheck->isChecked())) << 4);
+    newCommander.dajiang = (newCommander.dajiang & 0x0f) | dajiang;
+    newCommander.gong = static_cast<quint8>(gongText->text().toUInt());
+    newCommander.fang = static_cast<quint8>(fangText->text().toUInt());
+    newCommander.ming = static_cast<quint8>(mingText->text().toUInt());
+    newCommander.bi = static_cast<quint8>(biText->text().toUInt());
     quint8 skillRenHuiDang = static_cast<quint8>((static_cast<quint8>(skillRen->isChecked()) << 2) |
             (static_cast<quint8>(skillHui->isChecked()) << 1) |
             (static_cast<quint8>(skillDang->isChecked())));

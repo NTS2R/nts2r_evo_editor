@@ -32,6 +32,11 @@ private:
 
     constexpr static int attackAnimationAddress = 0x52281;
     constexpr static int deadAnimationAddress = 0x531B6;
+    constexpr static int daJiangAdddress = 0x1F510;
+    constexpr static int gongAdddress = 0x1F610;
+    constexpr static int fangAdddress = 0x1F710;
+    constexpr static int mingAdddress = 0x1F810;
+    constexpr static int biAdddress = 0x1F910;
     QVector<Commander> commanderVector;
 };
 
