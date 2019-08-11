@@ -6,6 +6,7 @@
 #include "ui_militarycommander.h"
 #include <QVector>
 #include "commander.h"
+#include <QButtonGroup>
 
 class MilitaryCommander : public QWidget, public Ui::MilitaryCommander
 {
@@ -38,6 +39,7 @@ private:
     constexpr static int mingAdddress = 0x1F810;
     constexpr static int biAdddress = 0x1F910;
     QVector<Commander> commanderVector;
+    QButtonGroup buttonGroup;
 };
 
 #endif // MILITARYCOMMANDER_H

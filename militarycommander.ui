@@ -208,6 +208,13 @@
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>简体名字</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="1">
             <spacer name="verticalSpacer_2">
              <property name="orientation">
@@ -219,30 +226,13 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>40</height>
+               <height>100</height>
               </size>
              </property>
             </spacer>
            </item>
-           <item row="0" column="1">
-            <widget class="QTextEdit" name="traditionalNameText"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>繁体名字</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
             <widget class="QTextEdit" name="simpliedNameText"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>简体名字</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>
@@ -436,7 +426,17 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QPlainTextEdit" name="faceText"/>
+            <widget class="QLineEdit" name="faceText"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>繁体名字</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="traditionalNameText"/>
            </item>
           </layout>
          </item>
@@ -655,9 +655,7 @@
   <tabstop>commanderList</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>refreshButton</tabstop>
-  <tabstop>traditionalNameText</tabstop>
   <tabstop>simpliedNameText</tabstop>
-  <tabstop>faceText</tabstop>
   <tabstop>skillLiao</tabstop>
   <tabstop>skillDang</tabstop>
   <tabstop>skillShu</tabstop>

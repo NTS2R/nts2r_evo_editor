@@ -11,6 +11,12 @@ MilitaryCommander::MilitaryCommander(QWidget *parent) : QWidget(parent)
     connect(this->commanderList, &QListWidget::itemSelectionChanged,
             this, &MilitaryCommander::setCurrentItem);
     dataEdit->setReadOnly(true);
+
+    buttonGroup.addButton(gongCheck, 1);
+    buttonGroup.addButton(fangCheck, 2);
+    buttonGroup.addButton(mingCheck, 3);
+    buttonGroup.addButton(biCheck, 4);
+    buttonGroup.setExclusive(true);
 }
 
 void MilitaryCommander::refreshMiliaryCommanderToListView() {
@@ -145,7 +151,7 @@ void MilitaryCommander::setCurrentItem() {
     wofangliupaiText->setText(QString("%1").arg(commander.wofangliupai, 2, 16, QChar('0')).toUpper());
     difangliupaiText->setText(QString("%1").arg(commander.difangliupai, 2, 16, QChar('0')).toUpper());
     diaobaoliupaiText->setText(QString("%1").arg(commander.diaobaoliupai, 2, 16, QChar('0')).toUpper());
-    faceText->setPlainText(commander.face.toUpper());
+    faceText->setText(commander.face.toUpper());
     faceControlText->setText(QString("%1").arg(commander.faceControl, 0, 16).toUpper());
     moulvezhiText->setText(QString("%1").arg(commander.moulvezhi));
     jimouText->setText(QString("%1").arg(commander.jimou));
@@ -156,10 +162,10 @@ void MilitaryCommander::setCurrentItem() {
     traditionalNameText->setText(commander.chtName.toUpper());
     chtNameControlText->setText(QString("%1").arg(commander.chtNameControl, 0, 16).toUpper());
     setSkillCheckBox(commander);
-    gongText->setText(QString("%1").arg(commander.gong));
-    fangText->setText(QString("%1").arg(commander.fang));
-    mingText->setText(QString("%1").arg(commander.ming));
-    biText->setText(QString("%1").arg(commander.bi));
+    gongText->setText(QString("%1").arg(commander.gong, 2, 16, QChar('0')).toUpper());
+    fangText->setText(QString("%1").arg(commander.fang, 2, 16, QChar('0')).toUpper());
+    mingText->setText(QString("%1").arg(commander.ming, 2, 16, QChar('0')).toUpper());
+    biText->setText(QString("%1").arg(commander.bi, 2, 16, QChar('0')).toUpper());
 
     attackAnimationTextEdit->setText(QString("%1").arg(commander.attackAnimation, 2, 16, QChar('0')).toUpper());
     deadAnimationTextEdit->setText(QString("%1").arg(commander.deadAnimation, 2, 16, QChar('0')).toUpper());
@@ -177,20 +183,20 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.wofangliupai = static_cast<quint8>(wofangliupaiText->text().toUInt(nullptr, 16));
     newCommander.difangliupai = static_cast<quint8>(difangliupaiText->text().toUInt(nullptr, 16));
     newCommander.diaobaoliupai = static_cast<quint8>(diaobaoliupaiText->text().toUInt(nullptr, 16));
-    newCommander.face = faceText->toPlainText();
+    newCommander.face = faceText->text();
     newCommander.faceControl = static_cast<quint8>(faceControlText->text().toUInt(nullptr, 16));
     newCommander.chsName = simpliedNameText->toPlainText();
-    newCommander.chtName = traditionalNameText->toPlainText();
+    newCommander.chtName = traditionalNameText->text();
     newCommander.chtNameControl = static_cast<quint8>(chtNameControlText->text().toUInt(nullptr, 16));
     newCommander.attackAnimation = static_cast<quint8>(attackAnimationTextEdit->text().toUInt(nullptr, 16));
     newCommander.deadAnimation = static_cast<quint8>(deadAnimationTextEdit->text().toUInt(nullptr, 16));
     newCommander.jice = static_cast<quint8>(jiceText->text().toUInt(nullptr, 16));
     newCommander.dixing = static_cast<quint8>(dixingText->text().toUInt(nullptr, 16));
     newCommander.gongjili = static_cast<quint8>(gongjiliText->text().toUInt());
-    newCommander.fangyuli = static_cast<quint8>(fangyuliText->text().toUInt());
-    newCommander.moulvezhi = static_cast<quint8>(moulvezhiText->text().toUInt());
-    newCommander.jimou = static_cast<quint8>(jimouText->text().toUInt());
-    newCommander.weapon = static_cast<quint8>(weaponText->text().toUInt());
+    newCommander.fangyuli = static_cast<quint8>(fangyuliText->text().toUInt(nullptr, 16));
+    newCommander.moulvezhi = static_cast<quint8>(moulvezhiText->text().toUInt(nullptr, 16));
+    newCommander.jimou = static_cast<quint8>(jimouText->text().toUInt(nullptr, 16));
+    newCommander.weapon = static_cast<quint8>(weaponText->text().toUInt(nullptr, 16));
 
     quint8 dajiang = static_cast<quint8>((static_cast<quint8>(gongCheck->isChecked()) << 7) |
             (static_cast<quint8>(fangCheck->isChecked()) << 6) |
