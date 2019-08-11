@@ -107,100 +107,150 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>模型</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>章节</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="colorText"/>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="zhiliText"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>地址</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>智力</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>速度</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="dataAddressText"/>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="dixingText"/>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="chapterText"/>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="suduText"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>武力</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_22">
-             <property name="text">
-              <string>地形</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="modelText"/>
-           </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="wuliText"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>颜色</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <widget class="QLineEdit" name="jiceText"/>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_23">
-             <property name="text">
-              <string>计策</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>模型</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>章节</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>地址</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>智力</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>速度</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>武力</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>地形</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>颜色</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_23">
+           <property name="text">
+            <string>计策</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="dataAddressSpinBox">
+           <property name="maximum">
+            <number>10000000</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="chapterSpinBox">
+           <property name="maximum">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="colorSpinBox">
+           <property name="maximum">
+            <number>15</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="modelSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="wuliSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QSpinBox" name="zhiliSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QSpinBox" name="suduSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QSpinBox" name="dixingSpinBox">
+           <property name="maximum">
+            <number>15</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QSpinBox" name="jiceSpinBox">
+           <property name="maximum">
+            <number>15</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -208,6 +258,9 @@
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="1">
+            <widget class="QTextEdit" name="simpliedNameText"/>
+           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
@@ -230,9 +283,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item row="1" column="1">
-            <widget class="QTextEdit" name="simpliedNameText"/>
            </item>
           </layout>
          </item>
@@ -291,9 +341,6 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="weaponText"/>
-           </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_24">
              <property name="text">
@@ -302,13 +349,41 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="wofangliupaiText"/>
+            <widget class="QSpinBox" name="wofangliupaiSpinBox">
+             <property name="maximum">
+              <number>143</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="difangliupaiText"/>
+            <widget class="QSpinBox" name="difangliupaiSpinBox">
+             <property name="maximum">
+              <number>127</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="diaobaoliupaiText"/>
+            <widget class="QSpinBox" name="diaobaoliupaiSpinBox">
+             <property name="maximum">
+              <number>31</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="weaponSpinBox">
+             <property name="maximum">
+              <number>7</number>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -318,18 +393,6 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <layout class="QGridLayout" name="gridLayout_8">
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="gongjiliText"/>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="moulvezhiText"/>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="chtNameControlText"/>
-           </item>
-           <item row="7" column="1">
-            <widget class="QLineEdit" name="deadAnimationTextEdit"/>
-           </item>
            <item row="7" column="0">
             <widget class="QLabel" name="label_16">
              <property name="text">
@@ -337,13 +400,85 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="faceControlText"/>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="moulvezhiSpinBox">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_19">
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="jimouSpinBox">
+             <property name="maximum">
+              <number>31</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_21">
              <property name="text">
-              <string>敌人谋略值</string>
+              <string>敌人防御力</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>繁体控制</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="fangyuliSpinBox">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_18">
+             <property name="text">
+              <string>敌人计谋</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="chtNameControlSpinBox">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QSpinBox" name="deadAnimationSpinBox">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QSpinBox" name="faceControlSpinBox">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>脸谱控制</string>
              </property>
             </widget>
            </item>
@@ -354,13 +489,20 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="attackAnimationTextEdit"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_21">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_19">
              <property name="text">
-              <string>敌人防御力</string>
+              <string>敌人谋略值</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QSpinBox" name="attackAnimationSpinBox">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
              </property>
             </widget>
            </item>
@@ -371,30 +513,10 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="jimouText"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>脸谱控制</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="fangyuliText"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>敌人计谋</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>繁体控制</string>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="gongjiliSpinBox">
+             <property name="maximum">
+              <number>255</number>
              </property>
             </widget>
            </item>
@@ -425,9 +547,6 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="faceText"/>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
@@ -437,6 +556,9 @@
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="traditionalNameText"/>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="faceText"/>
            </item>
           </layout>
          </item>
@@ -613,9 +735,6 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="mingText"/>
-         </item>
          <item row="1" column="0">
           <widget class="QCheckBox" name="gongCheck">
            <property name="text">
@@ -623,19 +742,57 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="fangText"/>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="gongText"/>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="biText"/>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_25">
            <property name="text">
             <string>大将</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="gongSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="fangSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="mingSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="biSpinBox">
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="displayIntegerBase">
+            <number>16</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_26">
+           <property name="text">
+            <string>X / 256</string>
            </property>
           </widget>
          </item>
