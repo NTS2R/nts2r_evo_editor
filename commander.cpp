@@ -25,13 +25,13 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int
     //敌方流派 offset5
     auto difangliupaiAndQi = static_cast<quint8>(data.at(5));
     difangliupai = difangliupaiAndQi & 0x7F;
-    skillQi = (difangliupaiAndQi & 0x80) >> 7;
+    skillQi = difangliupaiAndQi & 0x80;
     //我方流派 offset6
     wofangliupai = static_cast<quint8>(data.at(6));
     //特技 仁 慧 挡 offset7 80/40/20
-    auto skillRenHuiDangAndJimou = static_cast<quint8>(static_cast<quint8>(data[7]));
-    skillRenHuiDang = skillRenHuiDangAndJimou & (0b11100000) >> 5;
-    jimou = skillRenHuiDangAndJimou & (0b00011111);
+    auto skillRenHuiDangAndJimou = static_cast<quint8>(data[7]);
+    skillRenHuiDang = skillRenHuiDangAndJimou & 0b11100000;
+    jimou = skillRenHuiDangAndJimou & 0b00011111;
     moulvezhi = static_cast<quint8>(static_cast<quint8>(data[8]));
     gongjili = static_cast<quint8>(static_cast<quint8>(data[9]));
     fangyuli = static_cast<quint8>(static_cast<quint8>(data[10]));
@@ -42,17 +42,17 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
     auto skillBiGongWuZhiShuAndWeapon = static_cast<quint8>(data.at(12));
     weapon = skillBiGongWuZhiShuAndWeapon & 0b00000111;
-    skillBiGongWuZhiShu = (skillBiGongWuZhiShuAndWeapon & (0b11111000)) >> 3;
+    skillBiGongWuZhiShu = skillBiGongWuZhiShuAndWeapon & 0b11111000;
     //特技 返 魂 觉 offset13 80/40/20
-    skillFanHunJue = static_cast<quint8>(static_cast<quint8>(data.at(13)) & (0b11100000)) >> 5;
+    skillFanHunJue = static_cast<quint8>(data.at(13) & 0b11100000);
     //掉宝流派 offset13 0x00-0x1F
     diaobaoliupai = static_cast<quint8>(data.at(13)) & (0b00011111);
     //脸谱 offset 14 - 19
     face = data.mid(14, 6).toHex(' ');
     //特技 offset 20 1临2疗4谋8防 1命2统4奋8识
     auto skillFangMouLiaoLinShiFenTongMing = static_cast<quint8>(data.at(20));
-    skillFangMouLiaoLin = skillFangMouLiaoLinShiFenTongMing >> 4;
-    skillShiFenTongMing = skillFangMouLiaoLinShiFenTongMing & 0xf;
+    skillFangMouLiaoLin = skillFangMouLiaoLinShiFenTongMing & 0xf0;
+    skillShiFenTongMing = skillFangMouLiaoLinShiFenTongMing & 0x0f;
     //脸谱控制 & 繁体中文控制
     quint8 offset21 = static_cast<quint8>(data.at(21));
     faceControl = offset21 >> 4;
@@ -75,29 +75,29 @@ Commander& Commander::update() {
     data[2] = static_cast<char>(zhili);
     data[3] = static_cast<char>(wuli);
     data[4] = static_cast<char>(sudu);
-    data[5] = static_cast<char>(difangliupai  | skillQi << 7);
+    data[5] = static_cast<char>(difangliupai  | skillQi);
     data[6] = static_cast<char>(wofangliupai);
     //特技 仁 慧 挡 offset7 80/40/20
-    data[7] = static_cast<char>((skillRenHuiDang << 5) | jimou);
+    data[7] = static_cast<char>(skillRenHuiDang | jimou);
     data[8] = static_cast<char>(moulvezhi);
     data[9] = static_cast<char>(gongjili);
     data[10] = static_cast<char>(fangyuli);
     data[11] = static_cast<char>((dixing << 4) + jice);
     //特技 避 攻 武 智 术 offset12 80/40/20/10/08
-    data[12] = static_cast<char>((skillBiGongWuZhiShu << 3) | weapon);
+    data[12] = static_cast<char>(skillBiGongWuZhiShu | weapon);
     //特技 返 魂 觉 offset13 80/40/20
     //掉宝流派 offset13 0x00-0x1F
-    data[13] = static_cast<char>((skillFanHunJue << 5) | diaobaoliupai);
+    data[13] = static_cast<char>(skillFanHunJue | diaobaoliupai);
     //脸谱 offset 14 - 19
     auto faceList = face.split(' ');
     for (int i = 0; i < 6; i++) {
         data[14 + i] = static_cast<char>(faceList[i].toUInt(nullptr, 16));
     }
     //特技 offset 20 1临2医4谋8防 1命2统4奋8识
-    data[20] = static_cast<char>((skillFangMouLiaoLin << 4)+ skillShiFenTongMing);
-    qDebug() << ((skillFangMouLiaoLin << 4)+ skillShiFenTongMing);
+    data[20] = static_cast<char>(skillFangMouLiaoLin | skillShiFenTongMing);
+    qDebug() << (skillFangMouLiaoLin | skillShiFenTongMing);
     //脸谱控制 & 繁体中文控制 offset21
-    data[21] = static_cast<char>((faceControl << 4)+ chtNameControl);
+    data[21] = static_cast<char>((faceControl << 4) | chtNameControl);
     //CHT角色名字 offset22 -24
     auto chtNameList = chtName.split(' ');
     for (int i = 0; i < 3; i++) {

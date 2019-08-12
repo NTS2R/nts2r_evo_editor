@@ -20,6 +20,8 @@ public:
     ~MainWindow();
 
     static QByteArray nesFileByteArray;
+    static QString chsNameLibrary[16][256];
+    static QString chtNameLibrary[2][256];
 signals:
     void refreshMilitaryCommander();
 
