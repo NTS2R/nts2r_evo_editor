@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QInputDialog>
 QByteArray MainWindow::nesFileByteArray;
 QString MainWindow::chsNameLibrary[16][256];
 QString MainWindow::chtNameLibrary[2][256];
@@ -13,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    setWindowFlag(Qt::WindowCloseButtonHint);
     ui->setupUi(this);
-    auto file = new QMenu(tr("&文件"), this);
+    file = new QMenu(tr("&文件"), this);
     auto open = new QAction(tr("&打开"), this);
     auto save = new QAction(tr("&保存"), this);
     file->addAction(open);
@@ -22,6 +24,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(open, &QAction::triggered, this, &MainWindow::openFile);
     connect(save, &QAction::triggered, this, &MainWindow::saveFile);
     menuBar()->addMenu(file);
+
+    mapper = new QMenu(tr("Mapper"), this);
+    mapperMessagebox = new QAction(tr("&修改Mapper"), this);
+    mapperMessagebox->setEnabled(false);
+    mapper->addAction(mapperMessagebox);
+    connect(mapperMessagebox, &QAction::triggered, this, &MainWindow::modifyMapper);
+    menuBar()->addMenu(mapper);
     tabWidget = ui->tabWidget;
     militaryCommander = new MilitaryCommander(this);
     militaryCommander->setVisible(true);
@@ -30,12 +39,40 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->resize(militaryCommander->size());
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
-
+    QMessageBox::warning(this, tr("免责声明"), tr("一定要备份ROM, ROM因为本修改器损毁概不负责"));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+int MainWindow::readMapper() {
+    int low = (nesFileByteArray[6] & 0xF0) >> 4;
+    int high = nesFileByteArray[7] & 0xF0;
+    int mapper = low | high;
+    qDebug() << "mapper: " << mapper;
+    return mapper;
+}
+
+void MainWindow::modifyMapper() {
+    bool ok;
+    char mapperValue = static_cast<char>(QInputDialog::getInt(this,
+                         tr("请输入Mapper"),
+                         tr("mapper: (0-255)"),
+                         readMapper(),
+                         0,
+                         255,
+                         1,
+                         &ok,
+                         Qt::WindowCloseButtonHint));
+    if (ok) {
+        char high = mapperValue & static_cast<char>(0xF0);
+        char low = static_cast<char>((mapperValue & 0x0F) << 4);
+        nesFileByteArray[6] = (nesFileByteArray[6] & static_cast<char>(0x0F)) | low;
+        nesFileByteArray[7] = (nesFileByteArray[7] & static_cast<char>(0x0F)) | high;
+        QMessageBox::information(this, tr("mapper"), tr("mapper修改成功, 请保存ROM"));
+    }
 }
 
 void MainWindow::openFile() {
@@ -99,6 +136,7 @@ void MainWindow::openFile() {
             qDebug() << nesFileByteArray.length();
             nesFile->close();
             emit refreshMilitaryCommander();
+            mapperMessagebox->setEnabled(true);
         }
     }
 }

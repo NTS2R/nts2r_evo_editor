@@ -28,13 +28,17 @@ signals:
 private slots:
     void openFile();
     void saveFile();
-
+    void modifyMapper();
+    int readMapper();
 
 private:
     Ui::MainWindow *ui;
     QTabWidget* tabWidget;
     MilitaryCommander* militaryCommander;
     QString nesFileName;
+    QMenu* file;
+    QMenu* mapper;
+    QAction* mapperMessagebox;
 };
 
 #endif // MAINWINDOW_H
