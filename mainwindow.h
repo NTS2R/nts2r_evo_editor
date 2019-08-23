@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTabWidget>
 #include "militarycommander.h"
+#include "formation.h"
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +36,7 @@ private:
     Ui::MainWindow *ui;
     QTabWidget* tabWidget;
     MilitaryCommander* militaryCommander;
+    Formation* formation;
     QString nesFileName;
     QMenu* file;
     QMenu* mapper;

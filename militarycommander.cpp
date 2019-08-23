@@ -42,6 +42,7 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
             if (static_cast<quint8>(value) == static_cast<quint8>(0xFF))
                 break;
         }
+
         QByteArray commanderAnimation;
         commanderAnimation.append(nes.at(attackAnimationAddress + index));
         commanderAnimation.append(nes.at(deadAnimationAddress + index));
@@ -52,6 +53,12 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
         dajiang.append(nes[fangAdddress + index]);
         dajiang.append(nes[mingAdddress + index]);
         dajiang.append(nes[biAdddress + index]);
+
+        // !!! temp action !!!
+        commanderData.buhuo = static_cast<quint8>(nes[buhuoAddress + index]);
+        commanderData.zhansha = static_cast<quint8>(nes[zhanshaAddress + index]);
+        commanderData.attackCount = static_cast<quint8>(nes[attackCountAddress + index]);
+        commanderData.celveCount = static_cast<quint8>(nes[celveAddress + index]);
         commanderData.setCommanderAttribute(commanderValue, commanderAnimation, commanderAddress, dajiang);
         commanderVector.push_back(commanderData);
     }
@@ -78,6 +85,10 @@ void MilitaryCommander::saveNesFile() {
         nes[fangAdddress + index] = static_cast<char>(commanderVector[index].fang);
         nes[mingAdddress + index] = static_cast<char>(commanderVector[index].ming);
         nes[biAdddress + index] = static_cast<char>(commanderVector[index].bi);
+        nes[buhuoAddress + index] = static_cast<char>(commanderVector[index].buhuo);
+        nes[zhanshaAddress + index] = static_cast<char>(commanderVector[index].zhansha);
+        nes[attackCountAddress + index] = static_cast<char>(commanderVector[index].attackCount);
+        nes[celveAddress + index] = static_cast<char>(commanderVector[index].celveCount);
     }
 }
 
@@ -202,6 +213,10 @@ void MilitaryCommander::setCurrentItem() {
 
     attackAnimationSpinBox->setValue(commander.attackAnimation);
     deadAnimationSpinBox->setValue(commander.deadAnimation);
+    buhuoIndexSpinBox->setValue(commander.buhuo);
+    zhanshaIndexSpinBox->setValue(commander.zhansha);
+    attackCountSpinBox->setValue(commander.attackCount);
+    celveCountSpinBox->setValue(commander.celveCount);
 }
 
 Commander MilitaryCommander::updateCommander(const Commander &commander) {
@@ -227,6 +242,10 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.chtNameControl = static_cast<quint8>(chtNameControlSpinBox->value());
     newCommander.attackAnimation = static_cast<quint8>(attackAnimationSpinBox->value());
     newCommander.deadAnimation = static_cast<quint8>(deadAnimationSpinBox->value());
+    newCommander.buhuo = static_cast<quint8>(buhuoIndexSpinBox->value());
+    newCommander.zhansha = static_cast<quint8>(zhanshaIndexSpinBox->value());
+    newCommander.attackCount = static_cast<quint8>(attackCountSpinBox->value());
+    newCommander.celveCount = static_cast<quint8>(celveCountSpinBox->value());
 
     newCommander.gongjili = static_cast<quint8>(gongjiliSpinBox->value());
     newCommander.fangyuli = static_cast<quint8>(fangyuliSpinBox->value());

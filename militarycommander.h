@@ -38,6 +38,10 @@ private:
     constexpr static int fangAdddress = 0x1F710;
     constexpr static int mingAdddress = 0x1F810;
     constexpr static int biAdddress = 0x1F910;
+    constexpr static int buhuoAddress = 0xF9610;
+    constexpr static int zhanshaAddress = 0xF9710;
+    constexpr static int attackCountAddress = 0xF8010;
+    constexpr static int celveAddress = 0xFB210;
     QVector<Commander> commanderVector;
     QButtonGroup buttonGroup;
 };

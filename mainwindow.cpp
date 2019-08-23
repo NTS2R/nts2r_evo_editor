@@ -35,8 +35,15 @@ MainWindow::MainWindow(QWidget *parent) :
     militaryCommander = new MilitaryCommander(this);
     militaryCommander->setVisible(true);
 
+    formation = new Formation(this);
+    formation->setVisible(true);
+
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
     ui->tabWidget->resize(militaryCommander->size());
+
+    ui->tabWidget->addTab(formation, tr("阵型"));
+    ui->tabWidget->resize(formation->size());
+
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
     QMessageBox::warning(this, tr("免责声明"), tr("一定要备份ROM, ROM因为本修改器损毁概不负责"));

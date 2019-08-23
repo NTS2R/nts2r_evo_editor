@@ -26,16 +26,19 @@ CONFIG += c++14
 
 SOURCES += \
         commander.cpp \
+        formation.cpp \
         main.cpp \
         mainwindow.cpp \
         militarycommander.cpp
 
 HEADERS += \
         commander.h \
+        formation.h \
         mainwindow.h \
         militarycommander.h
 
 FORMS += \
+        formation.ui \
         mainwindow.ui \
         militarycommander.ui
 
