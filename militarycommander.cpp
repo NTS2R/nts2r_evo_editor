@@ -3,6 +3,12 @@
 #include <QDebug>
 #include <QListWidget>
 #include <QMessageBox>
+#include "xlsxdocument.h"
+#include "xlsxchartsheet.h"
+#include "xlsxcellrange.h"
+#include "xlsxchart.h"
+#include "xlsxrichstring.h"
+#include "xlsxworkbook.h"
 MilitaryCommander::MilitaryCommander(QWidget *parent) : QWidget(parent)
 {
     this->setupUi(this);
@@ -92,42 +98,53 @@ void MilitaryCommander::saveNesFile() {
     }
 }
 
+QString MilitaryCommander::getChsName(QString chsName) {
+    auto chsNameList = chsName.split(" ");
+    QList<int> nameList;
+    for (auto chsNameChar: chsNameList) {
+        nameList.append(chsNameChar.toInt(nullptr, 16));
+    }
+    QString name;
+    for (int i = 0; i < nameList.size(); ++i) {
+        if (nameList[i] == 0xFF) {
+            break;
+        }
+        if (nameList[i] >= 0xB0) {
+            continue;
+        }
+        int j = i;
+        while (nameList[--j] < 0xB0);
+        auto chsChar = MainWindow::chsNameLibrary[nameList[j] - 0xB0][nameList[i]];
+        qDebug() << chsChar;
+        name.append(chsChar);
+    }
+    return name;
+}
+
+QString MilitaryCommander::getChtName(QString chtName, quint8 chtNameControl) {
+    auto chtNameList = chtName.split(" ");
+    QString name;
+    for (int i = 0; i < 3; ++i) {
+        auto index = chtNameList[i].toUInt(nullptr, 16);
+        if (index == 0xFF) {
+            break;
+        }
+        auto areaIndex = ((1 << (2 - i)) & chtNameControl) > 0;
+        auto chtChar = MainWindow::chtNameLibrary[areaIndex][index];
+        name.append(chtChar);
+    }
+    return name;
+}
+
 void MilitaryCommander::setCommanderList() {
     this->commanderList->clear();
     for (int index = 0x00; index <= 0xFF; ++index) {
         auto commander = commanderVector[index];
         qDebug() << commander.chsName;
         QString name;
-        auto chsNameList = commander.chsName.split(" ");
-        QList<int> nameList;
-        for (auto chsNameChar: chsNameList) {
-            nameList.append(chsNameChar.toInt(nullptr, 16));
-        }
-        for (int i = 0; i < nameList.size(); ++i) {
-            if (nameList[i] == 0xFF) {
-                break;
-            }
-            if (nameList[i] >= 0xB0) {
-                continue;
-            }
-            int j = i;
-            while (nameList[--j] < 0xB0);
-            auto chsChar = MainWindow::chsNameLibrary[nameList[j] - 0xB0][nameList[i]];
-            qDebug() << chsChar;
-            name.append(chsChar);
-        }
+        name.append(getChsName(commander.chsName));
         name.append("/");
-        auto chtNameList = commander.chtName.split(" ");
-        auto chtNameControl = commander.chtNameControl;
-        for (int i = 0; i < 3; ++i) {
-            auto index = chtNameList[i].toUInt(nullptr, 16);
-            if (index == 0xFF) {
-                break;
-            }
-            auto areaIndex = ((1 << (2 - i)) & chtNameControl) > 0;
-            auto chtChar = MainWindow::chtNameLibrary[areaIndex][index];
-            name.append(chtChar);
-        }
+        name.append(getChtName(commander.chtName, commander.chtNameControl));
 
         commanderList->addItem(
                     QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( name ).toUpper()
@@ -322,4 +339,81 @@ void MilitaryCommander::on_saveButton_clicked()
     auto commander = commanderVector[index];
     commanderVector[index] = updateCommander(commander);
     saveNesFile();
+}
+
+void MilitaryCommander::exportMilitary(QString fileName) {
+    QXlsx::Document xlsx;
+    int excelOffest = 2;
+    if(!xlsx.selectSheet(tr("合成表"))) {
+        xlsx.addSheet(tr("合成表"));
+        xlsx.selectSheet(tr("合成表"));
+    }
+    xlsx.write(1, 1, tr("番号"));
+    xlsx.write(1, 2, tr("简体中文名字"));
+    xlsx.write(1, 3, tr("战斗中文名字"));
+    xlsx.write(1, 4, tr("合成等级"));
+    xlsx.write(1, 5, tr("是否可合成"));
+    xlsx.write(1, 6, tr("是否可做合成素材"));
+    auto& nes = MainWindow::nesFileByteArray;
+    for (int index = 0x00; index <= 0xFF; ++index) {
+        int excelIndex = index + excelOffest;
+        xlsx.write(excelIndex, 1, QString("0x%1").arg(index, 2, 16, QChar('0')).toUpper());
+        xlsx.write(excelIndex, 2, getChsName(commanderVector[index].chsName));
+        xlsx.write(excelIndex, 3, getChtName(commanderVector[index].chtName, commanderVector[index].chtNameControl));
+        xlsx.write(excelIndex, 4, static_cast<quint8>(nes.at(mergeAddress + index)));
+    }
+    for (int index = 0x00; index <= 0x7F; ++index) {
+        auto notToObjectIndex = static_cast<quint8>(nes.at(notCompositeToObjetcstartAddress + index));
+        int notToObjectExcelIndex = notToObjectIndex + excelOffest;
+        xlsx.write(notToObjectExcelIndex, 5, tr("否"));
+        auto notAsObjectIndex = static_cast<quint8>(nes.at(notCompositeAsObjetcstartAddress + index));
+        int notAsObjectExcelIndex = notAsObjectIndex + excelOffest;
+        xlsx.write(notAsObjectExcelIndex, 6, tr("否"));
+    }
+    if(!xlsx.selectSheet(tr("合成表2"))) {
+        xlsx.addSheet(tr("合成表2"));
+        xlsx.selectSheet(tr("合成表2"));
+    }
+    for (int index = 0x00; index <= 0xFF; ++index) {
+        QString name;
+        name.append(
+                    QString("%1 %2/%3")
+                    .arg(index, 2, 16, QChar('0')).toUpper()
+                    .arg(getChsName(commanderVector[index].chsName))
+                    .arg(getChtName(commanderVector[index].chtName, commanderVector[index].chtNameControl))
+                    );
+        int offestIndex = index + excelOffest;
+        xlsx.write(offestIndex, 1, name);
+        xlsx.write(1, offestIndex, name);
+    }
+    for (int i = 0x00; i <= 0xFF; ++i) {
+        for (int j = 0x00; j <= 0xFF; ++j) {
+            if (i == j) {
+                continue;
+            }
+            xlsx.selectSheet(tr("合成表"));
+            if (xlsx.read(i + excelOffest, 6).toString() == tr("否")) {
+                continue;
+            }
+            if (xlsx.read(j + excelOffest, 6).toString() == tr("否")) {
+                continue;
+            }
+            int result = (i & 0xAA) | (j & 0x55);
+            qDebug() << "result:" << result;
+            if (xlsx.read(result + excelOffest, 5).toString() == tr("否")) {
+                continue;
+            }
+            xlsx.selectSheet(tr("合成表2"));
+            QString name;
+            name.append(
+                        QString("0x%1 %2/%3")
+                        .arg(result, 2, 16, QChar('0')).toUpper()
+                        .arg(getChsName(commanderVector[result].chsName))
+                        .arg(getChtName(commanderVector[result].chtName, commanderVector[result].chtNameControl))
+                        );
+            xlsx.write(i + excelOffest, j + excelOffest, name);
+        }
+    }
+
+    xlsx.saveAs(fileName);
 }
