@@ -48,6 +48,10 @@ public:
 
     quint8 attackAnimation;
     quint8 deadAnimation;
+    quint8 buhuo;
+    quint8 zhansha;
+    quint8 attackCount;
+    quint8 celveCount;
 };
 
 #endif // COMMANDER_H

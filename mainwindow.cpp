@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QInputDialog>
+
 QByteArray MainWindow::nesFileByteArray;
 QString MainWindow::chsNameLibrary[16][256];
 QString MainWindow::chtNameLibrary[2][256];
@@ -31,12 +32,27 @@ MainWindow::MainWindow(QWidget *parent) :
     mapper->addAction(mapperMessagebox);
     connect(mapperMessagebox, &QAction::triggered, this, &MainWindow::modifyMapper);
     menuBar()->addMenu(mapper);
+
+    exportExcel = new QMenu(tr("导出"), this);
+    exportExcelForMerge = new QAction(tr("&导出合成表"), this);
+    exportExcelForMerge->setEnabled(false);
+    exportExcel->addAction(exportExcelForMerge);
+    connect(exportExcelForMerge, &QAction::triggered, this, &MainWindow::exportExcelForMergeFunc);
+    menuBar()->addMenu(exportExcel);
+
     tabWidget = ui->tabWidget;
     militaryCommander = new MilitaryCommander(this);
     militaryCommander->setVisible(true);
 
+    formation = new Formation(this);
+    formation->setVisible(true);
+
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
     ui->tabWidget->resize(militaryCommander->size());
+
+    ui->tabWidget->addTab(formation, tr("阵型"));
+    ui->tabWidget->resize(formation->size());
+
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
     QMessageBox::warning(this, tr("免责声明"), tr("一定要备份ROM, ROM因为本修改器损毁概不负责"));
@@ -137,6 +153,7 @@ void MainWindow::openFile() {
             nesFile->close();
             emit refreshMilitaryCommander();
             mapperMessagebox->setEnabled(true);
+            exportExcelForMerge->setEnabled(true);
         }
     }
 }
@@ -150,4 +167,10 @@ void MainWindow::saveFile() {
         nesFile->close();
         qDebug() << "Save";
     }
+}
+
+void MainWindow::exportExcelForMergeFunc() {
+    qDebug() << "Export";
+    auto excelFileName = nesFileName.replace(".nes", ".xlsx");
+    militaryCommander->exportMilitary(excelFileName);
 }

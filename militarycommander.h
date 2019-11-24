@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QByteArray>
+#include <QAxObject>
 #include "ui_militarycommander.h"
 #include <QVector>
 #include "commander.h"
@@ -14,13 +15,17 @@ class MilitaryCommander : public QWidget, public Ui::MilitaryCommander
 public:
     explicit MilitaryCommander(QWidget *parent = nullptr);
     constexpr static int leastLength = 25;
+    void exportMilitary(QString filename);
 public slots:
     void refreshMiliaryCommanderToListView();
+
 private:
     void setCommanderList();
     void setSkillCheckBox(Commander const& commander);
     Commander updateCommander(Commander const& commander);
     void saveNesFile();
+    QString getChsName(QString chsName);
+    QString getChtName(QString chtName, quint8 chtNameControl);
 
 private slots:
     void setCurrentItem();
@@ -38,6 +43,15 @@ private:
     constexpr static int fangAdddress = 0x1F710;
     constexpr static int mingAdddress = 0x1F810;
     constexpr static int biAdddress = 0x1F910;
+    constexpr static int buhuoAddress = 0xF9610;
+    constexpr static int zhanshaAddress = 0xF9710;
+    constexpr static int attackCountAddress = 0xF8010;
+    constexpr static int celveAddress = 0xFB210;
+    constexpr static int mergeAddress = 0xF9910;
+    // index 00 - 7F
+    constexpr static int notCompositeAsObjetcstartAddress= 0xF9810;
+    constexpr static int notCompositeToObjetcstartAddress= 0xF9890;
+
     QVector<Commander> commanderVector;
     QButtonGroup buttonGroup;
 };

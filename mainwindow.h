@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTabWidget>
 #include "militarycommander.h"
+#include "formation.h"
 namespace Ui {
 class MainWindow;
 }
@@ -29,16 +30,20 @@ private slots:
     void openFile();
     void saveFile();
     void modifyMapper();
+    void exportExcelForMergeFunc();
     int readMapper();
 
 private:
     Ui::MainWindow *ui;
     QTabWidget* tabWidget;
     MilitaryCommander* militaryCommander;
+    Formation* formation;
     QString nesFileName;
     QMenu* file;
     QMenu* mapper;
+    QMenu* exportExcel;
     QAction* mapperMessagebox;
+    QAction* exportExcelForMerge;
 };
 
 #endif // MAINWINDOW_H
