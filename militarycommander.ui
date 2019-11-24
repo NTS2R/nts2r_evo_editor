@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>474</height>
+    <height>648</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -94,7 +100,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>200</width>
+         <width>130</width>
          <height>16777215</height>
         </size>
        </property>
@@ -232,16 +238,6 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
-          <widget class="QSpinBox" name="dixingSpinBox">
-           <property name="maximum">
-            <number>15</number>
-           </property>
-           <property name="displayIntegerBase">
-            <number>16</number>
-           </property>
-          </widget>
-         </item>
          <item row="8" column="1">
           <widget class="QSpinBox" name="jiceSpinBox">
            <property name="maximum">
@@ -251,6 +247,9 @@
             <number>16</number>
            </property>
           </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QComboBox" name="dixingComboBox"/>
          </item>
         </layout>
        </item>
@@ -291,27 +290,17 @@
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_29">
-             <property name="text">
-              <string>攻击次数</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="wofangliupaiSpinBox">
-             <property name="maximum">
-              <number>143</number>
-             </property>
-             <property name="displayIntegerBase">
-              <number>16</number>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>我方流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_28">
+             <property name="text">
+              <string>斩杀番号</string>
              </property>
             </widget>
            </item>
@@ -332,28 +321,12 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QSpinBox" name="weaponSpinBox">
-             <property name="maximum">
-              <number>7</number>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>武器</string>
              </property>
             </widget>
-           </item>
-           <item row="0" column="2">
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>100</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="5" column="1">
             <widget class="QSpinBox" name="zhanshaIndexSpinBox">
@@ -365,13 +338,23 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
-            <widget class="QSpinBox" name="attackCountSpinBox"/>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="weaponComboBox"/>
            </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_28">
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_30">
              <property name="text">
-              <string>斩杀番号</string>
+              <string>策略次数</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QSpinBox" name="celveCountSpinBox"/>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>攻击次数</string>
              </property>
             </widget>
            </item>
@@ -379,6 +362,26 @@
             <widget class="QLabel" name="label_11">
              <property name="text">
               <string>掉宝流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QSpinBox" name="attackCountSpinBox"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>敌方流派</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="wofangliupaiSpinBox">
+             <property name="maximum">
+              <number>143</number>
+             </property>
+             <property name="displayIntegerBase">
+              <number>16</number>
              </property>
             </widget>
            </item>
@@ -402,30 +405,6 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>敌方流派</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_24">
-             <property name="text">
-              <string>武器</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_30">
-             <property name="text">
-              <string>策略次数</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QSpinBox" name="celveCountSpinBox"/>
-           </item>
           </layout>
          </item>
         </layout>
@@ -436,6 +415,18 @@
           <layout class="QGridLayout" name="gridLayout_8">
            <item row="7" column="0">
             <widget class="QLabel" name="label_16">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>死亡动画</string>
              </property>
@@ -443,6 +434,12 @@
            </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="moulvezhiSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>255</number>
              </property>
@@ -450,6 +447,12 @@
            </item>
            <item row="0" column="1">
             <widget class="QSpinBox" name="jimouSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>31</number>
              </property>
@@ -460,6 +463,18 @@
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_21">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>敌人防御力</string>
              </property>
@@ -467,6 +482,18 @@
            </item>
            <item row="5" column="0">
             <widget class="QLabel" name="label_14">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>繁体控制</string>
              </property>
@@ -474,6 +501,12 @@
            </item>
            <item row="3" column="1">
             <widget class="QSpinBox" name="fangyuliSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>255</number>
              </property>
@@ -481,6 +514,18 @@
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_18">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>敌人计谋</string>
              </property>
@@ -488,6 +533,12 @@
            </item>
            <item row="5" column="1">
             <widget class="QSpinBox" name="chtNameControlSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>15</number>
              </property>
@@ -498,6 +549,12 @@
            </item>
            <item row="7" column="1">
             <widget class="QSpinBox" name="deadAnimationSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>255</number>
              </property>
@@ -506,25 +563,20 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QSpinBox" name="faceControlSpinBox">
-             <property name="maximum">
-              <number>15</number>
-             </property>
-             <property name="displayIntegerBase">
-              <number>16</number>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>脸谱控制</string>
-             </property>
-            </widget>
-           </item>
            <item row="6" column="0">
             <widget class="QLabel" name="label_15">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>攻击动画</string>
              </property>
@@ -532,6 +584,18 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_19">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>敌人谋略值</string>
              </property>
@@ -539,6 +603,12 @@
            </item>
            <item row="6" column="1">
             <widget class="QSpinBox" name="attackAnimationSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>255</number>
              </property>
@@ -549,6 +619,18 @@
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_20">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="text">
               <string>敌人攻击力</string>
              </property>
@@ -556,18 +638,24 @@
            </item>
            <item row="2" column="1">
             <widget class="QSpinBox" name="gongjiliSpinBox">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="maximum">
               <number>255</number>
              </property>
             </widget>
            </item>
-           <item row="4" column="2">
+           <item row="5" column="2">
             <spacer name="horizontalSpacer">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -599,7 +687,123 @@
             <widget class="QLineEdit" name="traditionalNameText"/>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="faceText"/>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMaximumSize</enum>
+             </property>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText1">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceText6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="faceControlText">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>

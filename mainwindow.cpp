@@ -6,10 +6,15 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QMap>
+#include <QJsonParseError>
+#include <QJsonObject>
 
 QByteArray MainWindow::nesFileByteArray;
 QString MainWindow::chsNameLibrary[16][256];
 QString MainWindow::chtNameLibrary[2][256];
+QMap<QString, QString> MainWindow::weaponName;
+QMap<QString, QString> MainWindow::dixingName;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -47,11 +52,15 @@ MainWindow::MainWindow(QWidget *parent) :
     formation = new Formation(this);
     formation->setVisible(true);
 
+    ui->tabWidget->setStyleSheet("QTabBar::tab { height: 20px; width: 50px; }");
+
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
-    ui->tabWidget->resize(militaryCommander->size());
+//    ui->tabWidget->resize(militaryCommander->size());
 
     ui->tabWidget->addTab(formation, tr("阵型"));
-    ui->tabWidget->resize(formation->size());
+//    ui->tabWidget->resize(formation->size());
+//    ui->tabWidget->resize()
+
 
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
@@ -133,6 +142,78 @@ void MainWindow::openFile() {
                 chtNameLibrary[i-1][index++] = text;
             }
         }
+
+        auto weaponFileNameJson = QString("%1/%2/degrade.dat")
+                .arg(QCoreApplication::applicationDirPath())
+                .arg(configPath);
+        QFile loadFile{weaponFileNameJson};
+
+        if(!loadFile.open(QIODevice::ReadOnly)) {
+            qDebug() << "could't open projects json";
+            return;
+        }
+
+        QByteArray allData = loadFile.readAll();
+        QJsonParseError json_error;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &json_error));
+
+        if(json_error.error != QJsonParseError::NoError) {
+            qDebug() << "json error!";
+            return;
+        }
+        QJsonObject rootObj = jsonDoc.object();
+        QStringList keys = rootObj.keys();
+        for(int i = 0; i < keys.size(); i++) {
+            auto key = keys.at(i);
+            weaponName.insert(key, rootObj.value(key).toString());
+            qDebug() << key << " -> " << rootObj.value(key).toString();
+        }
+        militaryCommander->weaponComboBox->clear();
+        for (auto iter = weaponName.begin();
+             iter != weaponName.end();
+             ++iter) {
+            auto key = iter.key();
+            auto keyNumber = key.toInt(nullptr, 16);
+            auto value = key + "/" + weaponName[key];
+            if (keyNumber < 0x80) {
+                militaryCommander->weaponComboBox->insertItem(keyNumber, value);
+            }
+        }
+
+        auto dixingFileNameJson = QString("%1/%2/hero_terrian_name.dat")
+                .arg(QCoreApplication::applicationDirPath())
+                .arg(configPath);
+        QFile dixingFile{dixingFileNameJson};
+        if(!dixingFile.open(QIODevice::ReadOnly)) {
+            qDebug() << "could't open projects json";
+            return;
+        }
+
+        QByteArray dixingAllData = dixingFile.readAll();
+        QJsonParseError dixingJsonError;
+        QJsonDocument dixingJsonDoc(QJsonDocument::fromJson(dixingAllData, &dixingJsonError));
+
+        if(dixingJsonError.error != QJsonParseError::NoError) {
+            qDebug() << "dixing json error!";
+            return;
+        }
+
+        QJsonObject dixingRootObj = dixingJsonDoc.object();
+        QStringList dixingKeys = dixingRootObj.keys();
+        for(int i = 0; i < dixingKeys.size(); i++) {
+            auto key = dixingKeys.at(i);
+            dixingName.insert(key, dixingRootObj.value(key).toString());
+            qDebug() << key << " -> " << dixingRootObj.value(key).toString();
+        }
+
+        for (auto iter = dixingName.begin();
+             iter != dixingName.end();
+             ++iter) {
+            auto key = iter.key();
+            auto keyNumber = key.toInt(nullptr, 16);
+            auto value = key + "/" + dixingName[key];
+            militaryCommander->dixingComboBox->insertItem(keyNumber, value);
+        }
     }
 
     QFileDialog fileDialog;
@@ -173,4 +254,8 @@ void MainWindow::exportExcelForMergeFunc() {
     qDebug() << "Export";
     auto excelFileName = nesFileName.replace(".nes", ".xlsx");
     militaryCommander->exportMilitary(excelFileName);
+}
+
+QSize MainWindow::sizeHint() const {
+    return QSize{800, 600};
 }
