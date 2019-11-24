@@ -212,8 +212,17 @@ void MilitaryCommander::setCurrentItem() {
     difangliupaiSpinBox->setValue(commander.difangliupai);
     diaobaoliupaiSpinBox->setValue(commander.diaobaoliupai);
     weaponComboBox->setCurrentIndex(commander.weapon);
-    faceText->setText(commander.face.toUpper());
-    faceControlSpinBox->setValue(commander.faceControl);
+//    faceText->setText(commander.face.toUpper());
+    auto faceList = commander.face.toUpper().split(' ');
+    faceText1->setPlainText(faceList[0]);
+    faceText2->setPlainText(faceList[1]);
+    faceText3->setPlainText(faceList[2]);
+    faceText4->setPlainText(faceList[3]);
+    faceText5->setPlainText(faceList[4]);
+    faceText6->setPlainText(faceList[5]);
+    faceControlText->setPlainText(
+                QString("%1").arg(commander.faceControl, 2, 16, QChar('0')).toUpper()
+                );
     moulvezhiSpinBox->setValue(commander.moulvezhi);
     jimouSpinBox->setValue(commander.jimou);
 
@@ -251,9 +260,22 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.difangliupai = static_cast<quint8>(difangliupaiSpinBox->value());
     newCommander.diaobaoliupai = static_cast<quint8>(diaobaoliupaiSpinBox->value());
     newCommander.weapon = static_cast<quint8>(weaponComboBox->currentIndex());
-
-    newCommander.face = faceText->text();
-    newCommander.faceControl = static_cast<quint8>(faceControlSpinBox->value());
+    QString faceText;
+    faceText.append(faceText1->toPlainText());
+    faceText.append(" ");
+    faceText.append(faceText2->toPlainText());
+    faceText.append(" ");
+    faceText.append(faceText3->toPlainText());
+    faceText.append(" ");
+    faceText.append(faceText4->toPlainText());
+    faceText.append(" ");
+    faceText.append(faceText5->toPlainText());
+    faceText.append(" ");
+    faceText.append(faceText6->toPlainText());
+    newCommander.face = faceText;
+    newCommander.faceControl = static_cast<quint8>(
+                faceControlText->toPlainText().toUInt(nullptr, 16)
+                );
     newCommander.chsName = simpliedNameText->toPlainText();
     newCommander.chtName = traditionalNameText->text();
     newCommander.chtNameControl = static_cast<quint8>(chtNameControlSpinBox->value());
@@ -362,6 +384,8 @@ void MilitaryCommander::exportMilitary(QString fileName) {
     xlsx.write(1, 11, tr("速度"));
     xlsx.write(1, 12, tr("武器"));
     xlsx.write(1, 13, tr("地形"));
+    xlsx.write(1, 14, tr("大将"));
+    xlsx.write(1, 15, tr("加成"));
     auto& nes = MainWindow::nesFileByteArray;
     for (int index = 0x00; index <= 0xFF; ++index) {
         int excelIndex = index + excelOffest;
@@ -380,7 +404,24 @@ void MilitaryCommander::exportMilitary(QString fileName) {
         auto dixingString = QString("%1").arg(commanderVector[index].dixing, 2, 16, QChar('0')).toUpper();
         qDebug() << dixingString;
         xlsx.write(excelIndex, 13, MainWindow::dixingName[dixingString]);
+
+        auto dajiang = commanderVector[index].dajiang & 0xF0;
+
+        QMap<int, QPair<QString, quint8>> dajiangName {
+            {0b10000000, {tr("攻"), commanderVector[index].gong}},
+            {0b01000000, {tr("防"), commanderVector[index].fang}},
+            {0b00100000, {tr("命"), commanderVector[index].ming}},
+            {0b00010000, {tr("避"), commanderVector[index].bi}}
+        };
+
+        if (dajiangName.find(dajiang) != dajiangName.end()) {
+            xlsx.write(excelIndex, 14, dajiangName[dajiang].first);
+            xlsx.write(excelIndex, 15, dajiangName[dajiang].second / 255.0);
+        }
+
+
     }
+
     for (int index = 0x00; index <= 0x7F; ++index) {
         auto notToObjectIndex = static_cast<quint8>(nes.at(notCompositeToObjetcstartAddress + index));
         int notToObjectExcelIndex = notToObjectIndex + excelOffest;
