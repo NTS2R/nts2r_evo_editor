@@ -18,11 +18,14 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
     static QByteArray nesFileByteArray;
     static QString chsNameLibrary[16][256];
     static QString chtNameLibrary[2][256];
+    static QMap<QString, QString> weaponName;
+    static QMap<QString, QString> dixingName;
+    QSize sizeHint() const override;
 signals:
     void refreshMilitaryCommander();
 

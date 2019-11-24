@@ -10,6 +10,12 @@
     <height>474</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -87,7 +93,7 @@
      <item>
       <widget class="QListWidget" name="commanderList">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -232,16 +238,6 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
-          <widget class="QSpinBox" name="dixingSpinBox">
-           <property name="maximum">
-            <number>15</number>
-           </property>
-           <property name="displayIntegerBase">
-            <number>16</number>
-           </property>
-          </widget>
-         </item>
          <item row="8" column="1">
           <widget class="QSpinBox" name="jiceSpinBox">
            <property name="maximum">
@@ -251,6 +247,9 @@
             <number>16</number>
            </property>
           </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QComboBox" name="dixingComboBox"/>
          </item>
         </layout>
        </item>
@@ -329,13 +328,6 @@
              </property>
              <property name="displayIntegerBase">
               <number>16</number>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QSpinBox" name="weaponSpinBox">
-             <property name="maximum">
-              <number>7</number>
              </property>
             </widget>
            </item>
@@ -425,6 +417,9 @@
            </item>
            <item row="7" column="1">
             <widget class="QSpinBox" name="celveCountSpinBox"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="weaponComboBox"/>
            </item>
           </layout>
          </item>
