@@ -115,7 +115,7 @@ QString MilitaryCommander::getChsName(QString chsName) {
         int j = i;
         while (nameList[--j] < 0xB0);
         auto chsChar = MainWindow::chsNameLibrary[nameList[j] - 0xB0][nameList[i]];
-        qDebug() << chsChar;
+//        qDebug() << chsChar;
         name.append(chsChar);
     }
     return name;
@@ -212,7 +212,6 @@ void MilitaryCommander::setCurrentItem() {
     difangliupaiSpinBox->setValue(commander.difangliupai);
     diaobaoliupaiSpinBox->setValue(commander.diaobaoliupai);
     weaponComboBox->setCurrentIndex(commander.weapon);
-//    faceText->setText(commander.face.toUpper());
     auto faceList = commander.face.toUpper().split(' ');
     faceText1->setPlainText(faceList[0]);
     faceText2->setPlainText(faceList[1]);
@@ -229,7 +228,11 @@ void MilitaryCommander::setCurrentItem() {
     //CHS角色名字 offset25 - 最后
     simpliedNameText->setText(commander.chsName.toUpper());
     //CHT角色名字 offset22 -24
-    traditionalNameText->setText(commander.chtName.toUpper());
+    auto chtNameList = commander.chtName.toUpper().split(' ');
+    chtNameSpinBox1->setValue(static_cast<int>(chtNameList[0].toUInt(nullptr, 16)));
+    chtNameSpinBox2->setValue(static_cast<int>(chtNameList[1].toUInt(nullptr, 16)));
+    chtNameSpinBox3->setValue(static_cast<int>(chtNameList[2].toUInt(nullptr, 16)));
+//    traditionalNameText->setText(commander.chtName.toUpper());
     chtNameControlSpinBox->setValue(commander.chtNameControl);
     setSkillCheckBox(commander);
     gongSpinBox->setValue(commander.gong);
@@ -277,7 +280,14 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
                 faceControlText->toPlainText().toUInt(nullptr, 16)
                 );
     newCommander.chsName = simpliedNameText->toPlainText();
-    newCommander.chtName = traditionalNameText->text();
+//    newCommander.chtName = traditionalNameText->text();
+    QString chtName;
+    chtName.append(QString("%1").arg(chtNameSpinBox1->value(), 2, 16, QChar('0')).toUpper());
+    chtName.append(" ");
+    chtName.append(QString("%1").arg(chtNameSpinBox2->value(), 2, 16, QChar('0')).toUpper());
+    chtName.append(" ");
+    chtName.append(QString("%1").arg(chtNameSpinBox3->value(), 2, 16, QChar('0')).toUpper());
+    newCommander.chtName = chtName;
     newCommander.chtNameControl = static_cast<quint8>(chtNameControlSpinBox->value());
     newCommander.attackAnimation = static_cast<quint8>(attackAnimationSpinBox->value());
     newCommander.deadAnimation = static_cast<quint8>(deadAnimationSpinBox->value());
@@ -386,6 +396,28 @@ void MilitaryCommander::exportMilitary(QString fileName) {
     xlsx.write(1, 13, tr("地形"));
     xlsx.write(1, 14, tr("大将"));
     xlsx.write(1, 15, tr("加成"));
+
+    xlsx.write(1, 16, tr("仁"));
+    xlsx.write(1, 17, tr("慧"));
+    xlsx.write(1, 18, tr("挡"));
+    xlsx.write(1, 19, tr("奇"));
+    xlsx.write(1, 20, tr("避"));
+    xlsx.write(1, 21, tr("攻"));
+    xlsx.write(1, 22, tr("武"));
+    xlsx.write(1, 23, tr("智"));
+    xlsx.write(1, 24, tr("术"));
+    xlsx.write(1, 25, tr("返"));
+    xlsx.write(1, 26, tr("魂"));
+    xlsx.write(1, 27, tr("觉"));
+    xlsx.write(1, 28, tr("防"));
+    xlsx.write(1, 29, tr("谋"));
+    xlsx.write(1, 30, tr("疗"));
+    xlsx.write(1, 31, tr("临"));
+    xlsx.write(1, 32, tr("识"));
+    xlsx.write(1, 33, tr("奋"));
+    xlsx.write(1, 34, tr("统"));
+    xlsx.write(1, 35, tr("命"));
+
     auto& nes = MainWindow::nesFileByteArray;
     for (int index = 0x00; index <= 0xFF; ++index) {
         int excelIndex = index + excelOffest;
@@ -419,7 +451,78 @@ void MilitaryCommander::exportMilitary(QString fileName) {
             xlsx.write(excelIndex, 15, dajiangName[dajiang].second / 255.0);
         }
 
+        auto renHuiDang = commanderVector[index].skillRenHuiDang;
+        if (renHuiDang & 0b10000000) {
+            xlsx.write(excelIndex, 16, tr("仁"));
+        }
+        if (renHuiDang & 0b01000000) {
+            xlsx.write(excelIndex, 17, tr("慧"));
+        }
+        if (renHuiDang & 0b00100000) {
+            xlsx.write(excelIndex, 18, tr("挡"));
+        }
 
+        if (commanderVector[index].skillQi) {
+            xlsx.write(excelIndex, 19, tr("奇"));
+        }
+
+        auto skillBiGongWuZhiShu = commanderVector[index].skillBiGongWuZhiShu;
+
+        if (skillBiGongWuZhiShu & 0b10000000) {
+            xlsx.write(excelIndex, 20, tr("避"));
+        }
+        if (skillBiGongWuZhiShu & 0b01000000) {
+            xlsx.write(excelIndex, 21, tr("攻"));
+        }
+        if (skillBiGongWuZhiShu & 0b00100000) {
+            xlsx.write(excelIndex, 22, tr("武"));
+        }
+        if (skillBiGongWuZhiShu & 0b00010000) {
+            xlsx.write(excelIndex, 23, tr("智"));
+        }
+        if (skillBiGongWuZhiShu & 0b00001000) {
+            xlsx.write(excelIndex, 24, tr("术"));
+        }
+
+        auto skillFanHunJue = commanderVector[index].skillFanHunJue;
+        if (skillFanHunJue & 0b10000000) {
+            xlsx.write(excelIndex, 25, tr("返"));
+        }
+        if (skillFanHunJue & 0b01000000) {
+            xlsx.write(excelIndex, 26, tr("魂"));
+        }
+        if (skillFanHunJue & 0b00100000) {
+            xlsx.write(excelIndex, 27, tr("觉"));
+        }
+
+        auto skillFangMouLiaoLin = commanderVector[index].skillFangMouLiaoLin;
+
+        if (skillFangMouLiaoLin & 0b10000000) {
+            xlsx.write(excelIndex, 28, tr("防"));
+        }
+        if (skillFangMouLiaoLin & 0b01000000) {
+            xlsx.write(excelIndex, 29, tr("谋"));
+        }
+        if (skillFangMouLiaoLin & 0b00100000) {
+            xlsx.write(excelIndex, 30, tr("疗"));
+        }
+        if (skillFangMouLiaoLin & 0b00010000) {
+            xlsx.write(excelIndex, 31, tr("临"));
+        }
+
+        auto skillShiFenTongMing = commanderVector[index].skillShiFenTongMing;
+        if (skillShiFenTongMing & 0b00001000) {
+            xlsx.write(excelIndex, 32, tr("识"));
+        }
+        if (skillShiFenTongMing & 0b00000100) {
+            xlsx.write(excelIndex, 33, tr("奋"));
+        }
+        if (skillShiFenTongMing & 0b00000010) {
+            xlsx.write(excelIndex, 34, tr("统"));
+        }
+        if (skillShiFenTongMing & 0b00000001) {
+            xlsx.write(excelIndex, 35, tr("命"));
+        }
     }
 
     for (int index = 0x00; index <= 0x7F; ++index) {
@@ -437,10 +540,9 @@ void MilitaryCommander::exportMilitary(QString fileName) {
     for (int index = 0x00; index <= 0xFF; ++index) {
         QString name;
         name.append(
-                    QString("%1 %2/%3")
+                    QString("%1 %2")
                     .arg(index, 2, 16, QChar('0')).toUpper()
                     .arg(getChsName(commanderVector[index].chsName))
-                    .arg(getChtName(commanderVector[index].chtName, commanderVector[index].chtNameControl))
                     );
         int offestIndex = index + excelOffest;
         xlsx.write(offestIndex, 1, name);
@@ -459,17 +561,16 @@ void MilitaryCommander::exportMilitary(QString fileName) {
                 continue;
             }
             int result = (i & 0xAA) | (j & 0x55);
-            qDebug() << "result:" << result;
+//            qDebug() << "result:" << result;
             if (xlsx.read(result + excelOffest, 5).toString() == tr("否")) {
                 continue;
             }
             xlsx.selectSheet(tr("合成表"));
             QString name;
             name.append(
-                        QString("0x%1 %2/%3")
+                        QString("0x%1 %2")
                         .arg(result, 2, 16, QChar('0')).toUpper()
                         .arg(getChsName(commanderVector[result].chsName))
-                        .arg(getChtName(commanderVector[result].chtName, commanderVector[result].chtNameControl))
                         );
             xlsx.write(i + excelOffest, j + excelOffest, name);
         }
