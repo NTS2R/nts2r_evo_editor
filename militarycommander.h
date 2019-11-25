@@ -51,7 +51,9 @@ private:
     // index 00 - 7F
     constexpr static int notCompositeAsObjetcstartAddress= 0xF9810;
     constexpr static int notCompositeToObjetcstartAddress= 0xF9890;
-
+    // military limit
+    constexpr static int militrayLimitLow = 0xF8210;
+    constexpr static int militrayLimitHigh = 0xF8310;
     QVector<Commander> commanderVector;
     QButtonGroup buttonGroup;
 };

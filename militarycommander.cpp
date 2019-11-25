@@ -395,7 +395,7 @@ void MilitaryCommander::exportMilitary(QString fileName) {
     xlsx.write(1, 12, tr("武器"));
     xlsx.write(1, 13, tr("地形"));
     xlsx.write(1, 14, tr("大将"));
-    xlsx.write(1, 15, tr("加成"));
+    xlsx.write(1, 15, tr("加成百分比%"));
 
     xlsx.write(1, 16, tr("仁"));
     xlsx.write(1, 17, tr("慧"));
@@ -417,6 +417,23 @@ void MilitaryCommander::exportMilitary(QString fileName) {
     xlsx.write(1, 33, tr("奋"));
     xlsx.write(1, 34, tr("统"));
     xlsx.write(1, 35, tr("命"));
+    xlsx.write(1, 36, tr("攻击次数"));
+    xlsx.write(1, 37, tr("策略次数"));
+    xlsx.write(1, 38, tr("攻击倍率"));
+
+    QXlsx::Format firstFormat;
+    firstFormat.setFontBold(true);
+    firstFormat.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    xlsx.setRowFormat(1, firstFormat);
+
+    QXlsx::Format excelNumberFormat;
+    excelNumberFormat.setNumberFormat("#0");
+
+    QXlsx::Format extraNumberFormat;
+    extraNumberFormat.setNumberFormat("#0.0000");
+
+    quint8 judgeValue = 230u;
+    quint32 judgeAccValue = 615u;
 
     auto& nes = MainWindow::nesFileByteArray;
     for (int index = 0x00; index <= 0xFF; ++index) {
@@ -427,9 +444,9 @@ void MilitaryCommander::exportMilitary(QString fileName) {
         xlsx.write(excelIndex, 4, static_cast<quint8>(nes.at(mergeAddress + index)));
         xlsx.write(excelIndex, 7, commanderVector[index].chapter);
         xlsx.write(excelIndex, 8, QString("0x%1").arg(commanderVector[index].dataAddress, 2, 16, QChar('0')).toUpper());
-        xlsx.write(excelIndex, 9, commanderVector[index].wuli);
-        xlsx.write(excelIndex, 10, commanderVector[index].zhili);
-        xlsx.write(excelIndex, 11, commanderVector[index].sudu);
+        xlsx.write(excelIndex, 9, commanderVector[index].wuli, excelNumberFormat);
+        xlsx.write(excelIndex, 10, commanderVector[index].zhili, excelNumberFormat);
+        xlsx.write(excelIndex, 11, commanderVector[index].sudu, excelNumberFormat);
         auto weaponString = QString("%1").arg(commanderVector[index].weapon, 2, 16, QChar('0'));
         qDebug() << weaponString;
         xlsx.write(excelIndex, 12, MainWindow::weaponName[weaponString]);
@@ -448,7 +465,8 @@ void MilitaryCommander::exportMilitary(QString fileName) {
 
         if (dajiangName.find(dajiang) != dajiangName.end()) {
             xlsx.write(excelIndex, 14, dajiangName[dajiang].first);
-            xlsx.write(excelIndex, 15, dajiangName[dajiang].second / 255.0);
+            xlsx.write(excelIndex, 15, dajiangName[dajiang].second / 255.0 * 100, extraNumberFormat);
+//            xlsx.write(excelIndex, 15, dajiangName[dajiang].second);
         }
 
         auto renHuiDang = commanderVector[index].skillRenHuiDang;
@@ -523,7 +541,54 @@ void MilitaryCommander::exportMilitary(QString fileName) {
         if (skillShiFenTongMing & 0b00000001) {
             xlsx.write(excelIndex, 35, tr("命"));
         }
+
+        xlsx.write(excelIndex, 36, commanderVector[index].attackCount, excelNumberFormat);
+        xlsx.write(excelIndex, 37, commanderVector[index].celveCount, excelNumberFormat);
+
+
+//        武力222  156  83
+//        智力200  200  169
+//        速度222  111  140
+//        三围160  191  124
+        if ((0ul
+             + commanderVector[index].wuli
+             + commanderVector[index].zhili
+             + commanderVector[index].sudu) >= judgeAccValue) {
+            QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+            // 三围160  191  124
+            excelColorNumberFormat.setPatternBackgroundColor(QColor{160, 191, 124});
+            xlsx.write(excelIndex, 9, commanderVector[index].wuli, excelColorNumberFormat);
+            xlsx.write(excelIndex, 10, commanderVector[index].zhili, excelColorNumberFormat);
+            xlsx.write(excelIndex, 11, commanderVector[index].sudu, excelColorNumberFormat);
+        }
+
+        if (commanderVector[index].wuli >= judgeValue) {
+            QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+            // 武力222  156  83
+            excelColorNumberFormat.setPatternBackgroundColor(QColor{222, 156, 83});
+            xlsx.write(excelIndex, 9, commanderVector[index].wuli, excelColorNumberFormat);
+        }
+
+        if (commanderVector[index].zhili >= judgeValue) {
+            QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+            // 智力200  200  169
+            excelColorNumberFormat.setPatternBackgroundColor(QColor{200, 200, 169});
+            xlsx.write(excelIndex, 10, commanderVector[index].zhili, excelColorNumberFormat);
+        }
+
+        if (commanderVector[index].sudu >= judgeValue) {
+            QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+            // 速度222  111  140
+            excelColorNumberFormat.setPatternBackgroundColor(QColor{222, 156, 83});
+            xlsx.write(excelIndex, 11, commanderVector[index].sudu, excelColorNumberFormat);
+        }
+
+        auto limitLow = static_cast<quint16>(nes.at(militrayLimitLow + index));
+        auto limitHigh = static_cast<quint16>(nes.at(militrayLimitHigh + index));
+        double limit = limitHigh + limitLow / 255.0;
+        xlsx.write(excelIndex, 38, limit, extraNumberFormat);
     }
+
 
     for (int index = 0x00; index <= 0x7F; ++index) {
         auto notToObjectIndex = static_cast<quint8>(nes.at(notCompositeToObjetcstartAddress + index));
@@ -572,7 +637,23 @@ void MilitaryCommander::exportMilitary(QString fileName) {
                         .arg(result, 2, 16, QChar('0')).toUpper()
                         .arg(getChsName(commanderVector[result].chsName))
                         );
-            xlsx.write(i + excelOffest, j + excelOffest, name);
+            QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+            // 三围160  191  124
+            excelColorNumberFormat.setPatternBackgroundColor(QColor{160, 191, 124});
+            if (((0ul
+                 + commanderVector[result].wuli
+                 + commanderVector[result].zhili
+                 + commanderVector[result].sudu) >= judgeAccValue) |
+                    (commanderVector[result].wuli >= judgeValue) |
+                    (commanderVector[result].zhili >= judgeValue) |
+                    (commanderVector[result].sudu >= judgeValue)
+                    ) {
+                QXlsx::Format excelColorNumberFormat = excelNumberFormat;
+                // 三围160  191  124
+                excelColorNumberFormat.setPatternBackgroundColor(QColor{160, 191, 124});
+                xlsx.write(i + excelOffest, j + excelOffest, name, excelColorNumberFormat);
+            } else
+                xlsx.write(i + excelOffest, j + excelOffest, name);
         }
     }
     QFile file{fileName};
