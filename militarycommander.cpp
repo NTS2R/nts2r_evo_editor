@@ -814,6 +814,9 @@ void MilitaryCommander::importMilitary(QString filename) {
 
     size_t notToObjectIndex = 0;
     for (int index = 0x00; index <= 0xFF; ++index) {
+        nes.data()[notCompositeToObjetcstartAddress + index] = static_cast<char>(0xFF);
+    }
+    for (int index = 0x00; index <= 0xFF; ++index) {
         if (notToObjectIndex == 0x80) {
             QMessageBox::warning(nullptr, tr("警告"),
                                  tr("不可合成武将已经过128名\n当前导入到番号为%1\n余下不会被导入到ROM")
@@ -827,13 +830,16 @@ void MilitaryCommander::importMilitary(QString filename) {
 
     size_t notAsObjectIndex = 0;
     for (int index = 0x00; index <= 0xFF; ++index) {
+        nes.data()[notCompositeAsObjetcstartAddress + index] = static_cast<char>(0xFF);
+    }
+    for (int index = 0x00; index <= 0xFF; ++index) {
         if (notAsObjectIndex == 0x80) {
             QMessageBox::warning(nullptr, tr("警告"),
                                  tr("不可作为合成素材武将已经过128名\n当前导入到番号为%1\n余下不会被导入到ROM")
                                  .arg(index, 0, 16, QChar('0')));
             break;
         } else if (xlsx.read(excelOffest + index, 6).toString() == tr("否")) {
-            nes.data()[notCompositeToObjetcstartAddress + notAsObjectIndex] = static_cast<char>(index);
+            nes.data()[notCompositeAsObjetcstartAddress + notAsObjectIndex] = static_cast<char>(index);
             notAsObjectIndex++;
         }
     }
