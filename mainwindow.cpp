@@ -38,12 +38,20 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mapperMessagebox, &QAction::triggered, this, &MainWindow::modifyMapper);
     menuBar()->addMenu(mapper);
 
-    exportExcel = new QMenu(tr("导出"), this);
-    exportExcelForMerge = new QAction(tr("&导出合成表"), this);
+    exportImportExcel = new QMenu(tr("导出/导入"), this);
+    exportExcelForMerge = new QAction(tr("&导出修改/信息表"), this);
     exportExcelForMerge->setEnabled(false);
-    exportExcel->addAction(exportExcelForMerge);
+    exportImportExcel->addAction(exportExcelForMerge);
     connect(exportExcelForMerge, &QAction::triggered, this, &MainWindow::exportExcelForMergeFunc);
-    menuBar()->addMenu(exportExcel);
+    importMilitaryExcel = new QAction(tr("&导入武将信息"), this);
+    importMilitaryExcel->setEnabled(false);
+    exportImportExcel->addAction(importMilitaryExcel);
+    connect(importMilitaryExcel, &QAction::triggered, this, &MainWindow::importMilitary);
+    importSpecialExcel = new QAction(tr("&导入特殊表"), this);
+    importSpecialExcel->setEnabled(false);
+    exportImportExcel->addAction(importSpecialExcel);
+    connect(importSpecialExcel, &QAction::triggered, this, &MainWindow::importSpecial);
+    menuBar()->addMenu(exportImportExcel);
 
     tabWidget = ui->tabWidget;
     militaryCommander = new MilitaryCommander(this);
@@ -235,6 +243,8 @@ void MainWindow::openFile() {
             emit refreshMilitaryCommander();
             mapperMessagebox->setEnabled(true);
             exportExcelForMerge->setEnabled(true);
+            importMilitaryExcel->setEnabled(true);
+            importSpecialExcel->setEnabled(true);
         }
     }
 }
@@ -258,4 +268,38 @@ void MainWindow::exportExcelForMergeFunc() {
 
 QSize MainWindow::sizeHint() const {
     return QSize{800, 600};
+}
+
+void MainWindow::importMilitary() {
+    QFileDialog fileDialog;
+    fileDialog.setWindowTitle(tr("武将 xlsx"));
+    fileDialog.setDirectory(".");
+    fileDialog.setNameFilter(tr("xlsx(*.xlsx)"));
+    fileDialog.setFileMode(QFileDialog::ExistingFiles);
+    fileDialog.setViewMode(QFileDialog::Detail);
+    if (fileDialog.exec()) {
+        auto selectFileList = fileDialog.selectedFiles();
+        if (selectFileList.length() != 1) {
+        } else {
+            auto excelFileName = selectFileList.first();
+            militaryCommander->importMilitary(excelFileName);
+        }
+    }
+}
+
+void MainWindow::importSpecial() {
+    QFileDialog fileDialog;
+    fileDialog.setWindowTitle(tr("特殊 xlsx"));
+    fileDialog.setDirectory(".");
+    fileDialog.setNameFilter(tr("xlsx(*.xlsx)"));
+    fileDialog.setFileMode(QFileDialog::ExistingFiles);
+    fileDialog.setViewMode(QFileDialog::Detail);
+    if (fileDialog.exec()) {
+        auto selectFileList = fileDialog.selectedFiles();
+        if (selectFileList.length() != 1) {
+        } else {
+            auto excelFileName = selectFileList.first();
+            militaryCommander->importSpecial(excelFileName);
+        }
+    }
 }

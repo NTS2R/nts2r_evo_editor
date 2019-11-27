@@ -34,6 +34,8 @@ private slots:
     void saveFile();
     void modifyMapper();
     void exportExcelForMergeFunc();
+    void importMilitary();
+    void importSpecial();
     int readMapper();
 
 private:
@@ -44,9 +46,11 @@ private:
     QString nesFileName;
     QMenu* file;
     QMenu* mapper;
-    QMenu* exportExcel;
+    QMenu* exportImportExcel;
     QAction* mapperMessagebox;
     QAction* exportExcelForMerge;
+    QAction* importMilitaryExcel;
+    QAction* importSpecialExcel;
 };
 
 #endif // MAINWINDOW_H

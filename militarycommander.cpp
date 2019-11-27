@@ -141,13 +141,9 @@ void MilitaryCommander::setCommanderList() {
     for (int index = 0x00; index <= 0xFF; ++index) {
         auto commander = commanderVector[index];
         qDebug() << commander.chsName;
-        QString name;
-        name.append(getChsName(commander.chsName));
-        name.append("/");
-        name.append(getChtName(commander.chtName, commander.chtNameControl));
-
+        QString name{getChsName(commander.chsName)};
         commanderList->addItem(
-                    QString("%1 : %2").arg(index, 2, 16, QChar('0')).arg( name ).toUpper()
+                    QString("%1: %2").arg(index, 2, 16, QChar('0')).arg( name ).toUpper()
                     );
     }
 }
@@ -656,10 +652,212 @@ void MilitaryCommander::exportMilitary(QString fileName) {
                 xlsx.write(i + excelOffest, j + excelOffest, name);
         }
     }
+
+    if(!xlsx.selectSheet(tr("特殊"))) {
+        xlsx.addSheet(tr("特殊"));
+        xlsx.selectSheet(tr("特殊"));
+    }
+    excelOffest = 2;
+    xlsx.write(1, 1, tr("特殊系无效剧情战设置 18个"));
+    for (int i = 0; i < 18; ++i) {
+        xlsx.write(1, i+excelOffest,
+                   QString("0x%1").arg(
+                       static_cast<quint8>(nes.at(specialInvaild + i)),
+                       2,
+                       16,
+                       QChar('0')).toUpper());
+    }
+    xlsx.write(2, 1, tr("回复以外策略无效剧情战设置 13个"));
+    for (int i = 0; i < 13; ++i) {
+        xlsx.write(2, i+excelOffest,
+                   QString("0x%1").arg(
+                       static_cast<quint8>(nes.at(restoreInvaild + i)),
+                       2,
+                       16,
+                       QChar('0')).toUpper());
+    }
+
+    xlsx.write(3, 1, tr("成功率减半计策设置 5个"));
+    for (int i = 0; i < 5; ++i) {
+        xlsx.write(3, i+excelOffest,
+                   QString("0x%1").arg(
+                       static_cast<quint8>(nes.at(successfulPercentInhalf + i)),
+                       2,
+                       16,
+                       QChar('0')).toUpper());
+    }
+
     QFile file{fileName};
     if (file.exists()) {
         file.remove();
     }
 
     xlsx.saveAs(fileName);
+}
+
+void MilitaryCommander::importMilitary(QString filename) {
+    QXlsx::Document xlsx{filename};
+    int excelOffest = 2;
+    if(!xlsx.selectSheet(tr("武将"))) {
+        QMessageBox::warning(nullptr, tr("警告"), tr("没有武将表"));
+        return;
+    }
+    auto& nes = MainWindow::nesFileByteArray;
+    for (int index = 0x00; index <= 0xFF; ++index) {
+        int excelIndex = index + excelOffest;
+        nes.data()[mergeAddress + index] = static_cast<char>(xlsx.read(excelIndex, 4).toUInt());
+        commanderVector[index].chapter = static_cast<quint8>(xlsx.read(excelIndex, 7).toUInt());
+        commanderVector[index].wuli = static_cast<quint8>(xlsx.read(excelIndex, 9).toUInt());
+        commanderVector[index].zhili = static_cast<quint8>(xlsx.read(excelIndex, 10).toUInt());
+        commanderVector[index].sudu = static_cast<quint8>(xlsx.read(excelIndex, 11).toUInt());
+        auto weaponString = xlsx.read(excelIndex, 12).toString();
+        for (auto p = MainWindow::weaponName.begin(); p != MainWindow::weaponName.end(); ++p) {
+            if(p.value() == weaponString) {
+                commanderVector[index].weapon = static_cast<quint8>(p.key().toUInt(nullptr, 16));
+                break;
+            }
+        }
+        auto dixingString = xlsx.read(excelIndex, 13).toString();
+        for (auto p = MainWindow::dixingName.begin(); p != MainWindow::dixingName.end(); ++p) {
+            if(p.value() == dixingString) {
+                commanderVector[index].dixing = static_cast<quint8>(p.key().toUInt(nullptr, 16));
+                break;
+            }
+        }
+        commanderVector[index].attackCount = static_cast<quint8>(xlsx.read(excelIndex, 36).toUInt());
+        commanderVector[index].celveCount = static_cast<quint8>(xlsx.read(excelIndex, 37).toUInt());
+        auto limit = static_cast<quint16>(xlsx.read(excelIndex, 38).toDouble() * 100);
+        nes.data()[militrayLimitLow + index] = static_cast<char>(static_cast<quint8>(limit & 0xFF));
+        nes.data()[militrayLimitHigh + index] = static_cast<char>(static_cast<quint8>((limit >> 8) & 0xFF));
+        QMap<QString, quint8*> dajiangName {
+            {tr("攻"), &commanderVector[index].gong},
+            {tr("防"), &commanderVector[index].fang},
+            {tr("命"), &commanderVector[index].ming},
+            {tr("避"), &commanderVector[index].bi}
+        };
+        auto dajiang = xlsx.read(excelIndex, 14).toString();
+
+        for (auto p = dajiangName.begin(); p != dajiangName.end(); ++p) {
+            if(p.key() == dajiang) {
+                auto dajiangValue = xlsx.read(excelIndex, 15).toDouble() * 100;
+                *p.value() = static_cast<quint8>(dajiangValue);
+            }
+        }
+        if (xlsx.read(excelIndex, 16).toString() == tr("仁")) {
+            commanderVector[index].skillRenHuiDang |= 0b10000000;
+        }
+        if (xlsx.read(excelIndex, 17).toString() == tr("慧")) {
+            commanderVector[index].skillRenHuiDang |= 0b01000000;
+        }
+        if (xlsx.read(excelIndex, 18).toString() == tr("挡")) {
+            commanderVector[index].skillRenHuiDang |= 0b00100000;
+        }
+        if (xlsx.read(excelIndex, 19).toString() == tr("奇")) {
+            commanderVector[index].skillQi |= 0b10000000;
+        }
+
+        if (xlsx.read(excelIndex, 20).toString() == tr("避")) {
+            commanderVector[index].skillBiGongWuZhiShu |= 0b10000000;
+        }
+        if (xlsx.read(excelIndex, 21).toString() == tr("攻")) {
+            commanderVector[index].skillBiGongWuZhiShu |= 0b01000000;
+        }
+        if (xlsx.read(excelIndex, 22).toString() == tr("武")) {
+            commanderVector[index].skillBiGongWuZhiShu |= 0b00100000;
+        }
+        if (xlsx.read(excelIndex, 23).toString() == tr("智")) {
+            commanderVector[index].skillBiGongWuZhiShu |= 0b00010000;
+        }
+        if (xlsx.read(excelIndex, 24).toString() == tr("术")) {
+            commanderVector[index].skillBiGongWuZhiShu |= 0b00001000;
+        }
+
+        if (xlsx.read(excelIndex, 25).toString() == tr("返")) {
+            commanderVector[index].skillFanHunJue |= 0b01000000;
+        }
+        if (xlsx.read(excelIndex, 26).toString() == tr("魂")) {
+            commanderVector[index].skillFanHunJue |= 0b01000000;
+        }
+        if (xlsx.read(excelIndex, 27).toString() == tr("觉")) {
+            commanderVector[index].skillFanHunJue |= 0b00100000;
+        }
+
+        if (xlsx.read(excelIndex, 28).toString() == tr("防")) {
+            commanderVector[index].skillFangMouLiaoLin |= 0b10000000;
+        }
+        if (xlsx.read(excelIndex, 29).toString() == tr("谋")) {
+            commanderVector[index].skillFangMouLiaoLin |= 0b01000000;
+        }
+        if (xlsx.read(excelIndex, 30).toString() == tr("疗")) {
+            commanderVector[index].skillFangMouLiaoLin |= 0b00100000;
+        }
+        if (xlsx.read(excelIndex, 31).toString() == tr("临")) {
+            commanderVector[index].skillFangMouLiaoLin |= 0b00010000;
+        }
+
+        if (xlsx.read(excelIndex, 32).toString() == tr("识")) {
+            commanderVector[index].skillShiFenTongMing |= 0b00001000;
+        }
+        if (xlsx.read(excelIndex, 33).toString() == tr("奋")) {
+            commanderVector[index].skillShiFenTongMing |= 0b00000100;
+        }
+        if (xlsx.read(excelIndex, 34).toString() == tr("统")) {
+            commanderVector[index].skillShiFenTongMing |= 0b00000010;
+        }
+        if (xlsx.read(excelIndex, 35).toString() == tr("命")) {
+            commanderVector[index].skillShiFenTongMing |= 0b00000001;
+        }
+
+        commanderVector[index].dataAddress =
+                static_cast<quint16>(xlsx.read(excelIndex, 8).toString().toUInt(nullptr, 16));
+    }
+
+    size_t notToObjectIndex = 0;
+    for (int index = 0x00; index <= 0xFF; ++index) {
+        if (notToObjectIndex == 0x80) {
+            QMessageBox::warning(nullptr, tr("警告"),
+                                 tr("不可合成武将已经过128名\n当前导入到番号为%1\n余下不会被导入到ROM")
+                                 .arg(index, 0, 16, QChar('0')));
+            break;
+        } else if (xlsx.read(excelOffest + index, 5).toString() == tr("否")) {
+            nes.data()[notCompositeToObjetcstartAddress + notToObjectIndex] = static_cast<char>(index);
+            notToObjectIndex++;
+        }
+    }
+
+    size_t notAsObjectIndex = 0;
+    for (int index = 0x00; index <= 0xFF; ++index) {
+        if (notAsObjectIndex == 0x80) {
+            QMessageBox::warning(nullptr, tr("警告"),
+                                 tr("不可作为合成素材武将已经过128名\n当前导入到番号为%1\n余下不会被导入到ROM")
+                                 .arg(index, 0, 16, QChar('0')));
+            break;
+        } else if (xlsx.read(excelOffest + index, 6).toString() == tr("否")) {
+            nes.data()[notCompositeToObjetcstartAddress + notAsObjectIndex] = static_cast<char>(index);
+            notAsObjectIndex++;
+        }
+    }
+
+    QMessageBox::warning(nullptr, tr("成功"), tr("读取完成 请保存ROM"));
+}
+
+void MilitaryCommander::importSpecial(QString filename) {
+    QXlsx::Document xlsx{filename};
+    int excelOffest = 2;
+    if(!xlsx.selectSheet(tr("特殊"))) {
+        QMessageBox::warning(nullptr, tr("警告"), tr("没有特殊表"));
+        return;
+    }
+    auto& nes = MainWindow::nesFileByteArray;
+
+    for (int i = 0; i < 18; ++i) {
+        nes.data()[specialInvaild + i] = static_cast<char>(xlsx.read(1, i+excelOffest).toString().toUInt(nullptr, 16));
+    }
+    for (int i = 0; i < 13; ++i) {
+        nes.data()[restoreInvaild + i] = static_cast<char>(xlsx.read(2, i+excelOffest).toString().toUInt(nullptr, 16));
+    }
+    for (int i = 0; i < 5; ++i) {
+        nes.data()[successfulPercentInhalf + i] = static_cast<char>(xlsx.read(3, i+excelOffest).toString().toUInt(nullptr, 16));
+    }
+    QMessageBox::warning(nullptr, tr("成功"), tr("读取完成 请保存ROM"));
 }

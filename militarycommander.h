@@ -16,6 +16,8 @@ public:
     explicit MilitaryCommander(QWidget *parent = nullptr);
     constexpr static int leastLength = 25;
     void exportMilitary(QString filename);
+    void importMilitary(QString filename);
+    void importSpecial(QString filename);
 public slots:
     void refreshMiliaryCommanderToListView();
 
@@ -54,6 +56,9 @@ private:
     // military limit
     constexpr static int militrayLimitLow = 0xF8210;
     constexpr static int militrayLimitHigh = 0xF8310;
+    constexpr static int specialInvaild = 0x7bc4a;
+    constexpr static int restoreInvaild = 0x7bc5c;
+    constexpr static int successfulPercentInhalf = 0x7bc45;
     QVector<Commander> commanderVector;
     QButtonGroup buttonGroup;
 };
