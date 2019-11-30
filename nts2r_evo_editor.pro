@@ -8,7 +8,7 @@ QT       += core gui axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = nts2r_evo_editor
+TARGET = nts2r_editor
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,9 +22,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++14
+CONFIG += c++17
 
 SOURCES += \
+        about.cpp \
         commander.cpp \
         formation.cpp \
         main.cpp \
@@ -32,12 +33,15 @@ SOURCES += \
         militarycommander.cpp
 
 HEADERS += \
+        about.h \
         commander.h \
+        config.h \
         formation.h \
         mainwindow.h \
         militarycommander.h
 
 FORMS += \
+        about.ui \
         formation.ui \
         mainwindow.ui \
         militarycommander.ui
@@ -51,4 +55,6 @@ QXLSX_PARENTPATH=./QXlsx/QXlsx       # current QXlsx path is . (. means curret d
 QXLSX_HEADERPATH=./QXlsx/QXlsx/header/  # current QXlsx header path is ./header/
 QXLSX_SOURCEPATH=./QXlsx/QXlsx/source/  # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx/QXlsx.pri)
+
+RC_ICONS = "app.ico"
 

@@ -39,7 +39,7 @@ public:
     quint8 skillQi;
 
     quint8 diaobaoliupai;
-    QString face;
+    quint8 face[6];
     quint8 faceControl;
     quint8 chtNameControl;
     QString chtName;

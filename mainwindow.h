@@ -8,6 +8,8 @@
 #include <QTabWidget>
 #include "militarycommander.h"
 #include "formation.h"
+#include "about.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -36,7 +38,9 @@ private slots:
     void exportExcelForMergeFunc();
     void importMilitary();
     void importSpecial();
+    void aboutShow();
     int readMapper();
+    QString getBuildVersion();
 
 private:
     Ui::MainWindow *ui;

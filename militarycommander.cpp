@@ -23,6 +23,21 @@ MilitaryCommander::MilitaryCommander(QWidget *parent) : QWidget(parent)
     buttonGroup.addButton(mingCheck, 3);
     buttonGroup.addButton(biCheck, 4);
     buttonGroup.setExclusive(true);
+    connect(this->refreshNameShowButton, &QPushButton::clicked,
+            this, &MilitaryCommander::refreshName);
+}
+
+void MilitaryCommander::refreshName() {
+    auto chsName = simpliedNameText->toPlainText();
+    chsNameLabel->setText(getChsName(chsName));
+    QString chtName;
+    chtName.append(QString("%1").arg(chtNameSpinBox1->value(), 2, 16, QChar('0')).toUpper());
+    chtName.append(" ");
+    chtName.append(QString("%1").arg(chtNameSpinBox2->value(), 2, 16, QChar('0')).toUpper());
+    chtName.append(" ");
+    chtName.append(QString("%1").arg(chtNameSpinBox3->value(), 2, 16, QChar('0')).toUpper());
+    auto chtNameControl = static_cast<quint8>(chtNameControlSpinBox->value());
+    chtNameLabel->setText(getChtName(chtName, chtNameControl));
 }
 
 void MilitaryCommander::refreshMiliaryCommanderToListView() {
@@ -60,7 +75,6 @@ void MilitaryCommander::refreshMiliaryCommanderToListView() {
         dajiang.append(nes[mingAdddress + index]);
         dajiang.append(nes[biAdddress + index]);
 
-        // !!! temp action !!!
         commanderData.buhuo = static_cast<quint8>(nes[buhuoAddress + index]);
         commanderData.zhansha = static_cast<quint8>(nes[zhanshaAddress + index]);
         commanderData.attackCount = static_cast<quint8>(nes[attackCountAddress + index]);
@@ -208,28 +222,28 @@ void MilitaryCommander::setCurrentItem() {
     difangliupaiSpinBox->setValue(commander.difangliupai);
     diaobaoliupaiSpinBox->setValue(commander.diaobaoliupai);
     weaponComboBox->setCurrentIndex(commander.weapon);
-    auto faceList = commander.face.toUpper().split(' ');
-    faceText1->setPlainText(faceList[0]);
-    faceText2->setPlainText(faceList[1]);
-    faceText3->setPlainText(faceList[2]);
-    faceText4->setPlainText(faceList[3]);
-    faceText5->setPlainText(faceList[4]);
-    faceText6->setPlainText(faceList[5]);
-    faceControlText->setPlainText(
-                QString("%1").arg(commander.faceControl, 2, 16, QChar('0')).toUpper()
-                );
+
+    faceSpinBox1->setValue(commander.face[0]);
+    faceSpinBox2->setValue(commander.face[1]);
+    faceSpinBox3->setValue(commander.face[2]);
+    faceSpinBox4->setValue(commander.face[3]);
+    faceSpinBox5->setValue(commander.face[4]);
+    faceSpinBox6->setValue(commander.face[5]);
+    faceControlSpinBox->setValue(commander.faceControl);
     moulvezhiSpinBox->setValue(commander.moulvezhi);
     jimouSpinBox->setValue(commander.jimou);
 
     //CHS角色名字 offset25 - 最后
     simpliedNameText->setText(commander.chsName.toUpper());
+    chsNameLabel->setText(getChsName(commander.chsName));
     //CHT角色名字 offset22 -24
     auto chtNameList = commander.chtName.toUpper().split(' ');
     chtNameSpinBox1->setValue(static_cast<int>(chtNameList[0].toUInt(nullptr, 16)));
     chtNameSpinBox2->setValue(static_cast<int>(chtNameList[1].toUInt(nullptr, 16)));
     chtNameSpinBox3->setValue(static_cast<int>(chtNameList[2].toUInt(nullptr, 16)));
-//    traditionalNameText->setText(commander.chtName.toUpper());
     chtNameControlSpinBox->setValue(commander.chtNameControl);
+    chtNameLabel->setText(getChtName(commander.chtName, commander.chtNameControl));
+
     setSkillCheckBox(commander);
     gongSpinBox->setValue(commander.gong);
     fangSpinBox->setValue(commander.fang);
@@ -259,24 +273,18 @@ Commander MilitaryCommander::updateCommander(const Commander &commander) {
     newCommander.difangliupai = static_cast<quint8>(difangliupaiSpinBox->value());
     newCommander.diaobaoliupai = static_cast<quint8>(diaobaoliupaiSpinBox->value());
     newCommander.weapon = static_cast<quint8>(weaponComboBox->currentIndex());
-    QString faceText;
-    faceText.append(faceText1->toPlainText());
-    faceText.append(" ");
-    faceText.append(faceText2->toPlainText());
-    faceText.append(" ");
-    faceText.append(faceText3->toPlainText());
-    faceText.append(" ");
-    faceText.append(faceText4->toPlainText());
-    faceText.append(" ");
-    faceText.append(faceText5->toPlainText());
-    faceText.append(" ");
-    faceText.append(faceText6->toPlainText());
-    newCommander.face = faceText;
+
+    newCommander.face[0] = static_cast<quint8>(faceSpinBox1->value());
+    newCommander.face[1] = static_cast<quint8>(faceSpinBox2->value());
+    newCommander.face[2] = static_cast<quint8>(faceSpinBox3->value());
+    newCommander.face[3] = static_cast<quint8>(faceSpinBox4->value());
+    newCommander.face[4] = static_cast<quint8>(faceSpinBox5->value());
+    newCommander.face[5] = static_cast<quint8>(faceSpinBox6->value());
+
     newCommander.faceControl = static_cast<quint8>(
-                faceControlText->toPlainText().toUInt(nullptr, 16)
+                faceControlSpinBox->value()
                 );
     newCommander.chsName = simpliedNameText->toPlainText();
-//    newCommander.chtName = traditionalNameText->text();
     QString chtName;
     chtName.append(QString("%1").arg(chtNameSpinBox1->value(), 2, 16, QChar('0')).toUpper());
     chtName.append(" ");

@@ -32,6 +32,7 @@ private:
 private slots:
     void setCurrentItem();
     void on_saveButton_clicked();
+    void refreshName();
 
 private:
     constexpr static int baseAddress = 0x64010;

@@ -48,7 +48,9 @@ void Commander::setCommanderAttribute(QByteArray data, QByteArray animation, int
     //掉宝流派 offset13 0x00-0x1F
     diaobaoliupai = static_cast<quint8>(data.at(13)) & (0b00011111);
     //脸谱 offset 14 - 19
-    face = data.mid(14, 6).toHex(' ');
+    for (int i = 0; i < 6; ++i) {
+        face[i] = static_cast<quint8>(data.at(14 + i));
+    }
     //特技 offset 20 1临2疗4谋8防 1命2统4奋8识
     auto skillFangMouLiaoLinShiFenTongMing = static_cast<quint8>(data.at(20));
     skillFangMouLiaoLin = skillFangMouLiaoLinShiFenTongMing & 0xf0;
@@ -89,9 +91,8 @@ Commander& Commander::update() {
     //掉宝流派 offset13 0x00-0x1F
     data[13] = static_cast<char>(skillFanHunJue | diaobaoliupai);
     //脸谱 offset 14 - 19
-    auto faceList = face.split(' ');
     for (int i = 0; i < 6; i++) {
-        data[14 + i] = static_cast<char>(faceList[i].toUInt(nullptr, 16));
+        data[14 + i] = static_cast<char>(face[i]);
     }
     //特技 offset 20 1临2医4谋8防 1命2统4奋8识
     data[20] = static_cast<char>(skillFangMouLiaoLin | skillShiFenTongMing);

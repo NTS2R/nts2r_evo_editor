@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "about.h"
 #include <QSharedPointer>
 #include <QFileDialog>
 #include <QHBoxLayout>
@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QJsonParseError>
 #include <QJsonObject>
+#include "config.h"
 
 QByteArray MainWindow::nesFileByteArray;
 QString MainWindow::chsNameLibrary[16][256];
@@ -16,12 +17,25 @@ QString MainWindow::chtNameLibrary[2][256];
 QMap<QString, QString> MainWindow::weaponName;
 QMap<QString, QString> MainWindow::dixingName;
 
+QString MainWindow::getBuildVersion() {
+    QString buildVersionFormat{"v%1.%2.%3.%4.%5"};
+    QString buildVersion =
+            buildVersionFormat.arg(buildDate.year())
+            .arg(buildDate.month(), 2, 10, QChar('0'))
+            .arg(buildDate.day(), 2, 10, QChar('0'))
+            .arg(buildTime.hour(), 2, 10, QChar('0'))
+            .arg(buildTime.minute(), 2, 10, QChar(0));
+    qDebug() << "Build Version: " << buildVersion;
+    return buildVersion;
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     setWindowFlag(Qt::WindowCloseButtonHint);
     ui->setupUi(this);
+
     file = new QMenu(tr("&文件"), this);
     auto open = new QAction(tr("&打开"), this);
     auto save = new QAction(tr("&保存"), this);
@@ -53,6 +67,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(importSpecialExcel, &QAction::triggered, this, &MainWindow::importSpecial);
     menuBar()->addMenu(exportImportExcel);
 
+    auto about = new QAction(tr("&关于"), this);
+    connect(about, &QAction::triggered, this, &MainWindow::aboutShow);
+    menuBar()->addAction(about);
+
     tabWidget = ui->tabWidget;
     militaryCommander = new MilitaryCommander(this);
     militaryCommander->setVisible(true);
@@ -60,18 +78,18 @@ MainWindow::MainWindow(QWidget *parent) :
     formation = new Formation(this);
     formation->setVisible(true);
 
-    ui->tabWidget->setStyleSheet("QTabBar::tab { height: 20px; width: 50px; }");
+    ui->tabWidget->setStyleSheet("QTabBar::tab { height: 30px; width: 60px; }");
 
     ui->tabWidget->addTab(militaryCommander, tr("武将"));
-//    ui->tabWidget->resize(militaryCommander->size());
 
     ui->tabWidget->addTab(formation, tr("阵型"));
-//    ui->tabWidget->resize(formation->size());
-//    ui->tabWidget->resize()
-
+    ui->tabWidget->setTabEnabled(1,false);
+    ui->tabWidget->setStyleSheet("QTabBar::tab:disabled {width: 0; color: transparent;}");
 
     connect(this, &MainWindow::refreshMilitaryCommander,
             militaryCommander, &MilitaryCommander::refreshMiliaryCommanderToListView);
+    auto title = QString{"NTS2R_Editor "} + getBuildVersion();
+    setWindowTitle(title);
     QMessageBox::warning(this, tr("免责声明"), tr("一定要备份ROM, ROM因为本修改器损毁概不负责"));
 }
 
@@ -90,6 +108,7 @@ int MainWindow::readMapper() {
 
 void MainWindow::modifyMapper() {
     bool ok;
+    QMessageBox::warning(this, tr("推荐Mapper值"), tr("4(VisualNes)\n195(FCEUX)\n198(Other)\n224(nestopia)"));
     char mapperValue = static_cast<char>(QInputDialog::getInt(this,
                          tr("请输入Mapper"),
                          tr("mapper: (0-255)"),
@@ -245,6 +264,11 @@ void MainWindow::openFile() {
             exportExcelForMerge->setEnabled(true);
             importMilitaryExcel->setEnabled(true);
             importSpecialExcel->setEnabled(true);
+            auto title = QString{"NTS2R_Editor "} + getBuildVersion(); //this->windowTitle();
+            auto fileNameList = nesFileName.split("/");
+            title.append(" - ");
+            title.append(fileNameList.last());
+            setWindowTitle(title);
         }
     }
 }
@@ -302,4 +326,9 @@ void MainWindow::importSpecial() {
             militaryCommander->importSpecial(excelFileName);
         }
     }
+}
+
+void MainWindow::aboutShow() {
+    About aboutDialog;
+    aboutDialog.exec();
 }
